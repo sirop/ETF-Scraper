@@ -26,6 +26,7 @@ class Provider(Enum):
     Invesco = "Invesco"
     IShares_EU = "IShares_EU"
     SSGA_EU = "SSGA_EU"
+    Invesco_EU = "Invesco_EU"
 
 
 class SecurityListing(NamedTuple):

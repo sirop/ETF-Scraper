@@ -220,9 +220,11 @@ def test_bundled_listings_isins_are_valid():
     isins = listings["isin"].dropna()
     assert isins.map(is_valid_isin).all()
     assert not isins.duplicated().any()
-    # domicile matches the ISIN country for every fund that has one
+    # domicile matches the ISIN country, except for international "XS" ISINs
+    # (exchange traded commodities/notes, eg Invesco Physical Gold) which have none
     with_isin = listings.dropna(subset=["isin"])
-    assert (with_isin["domicile"] == with_isin["isin"].str[:2]).all()
+    national = with_isin[~with_isin["isin"].str.startswith("XS")]
+    assert (national["domicile"] == national["isin"].str[:2]).all()
     us_providers = {"IShares", "SSGA", "Vanguard", "Invesco"}
     assert (listings.loc[listings["provider"].isin(us_providers), "domicile"] == "US").all()
     # leading zeros preserved

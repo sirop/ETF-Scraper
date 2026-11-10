@@ -152,6 +152,7 @@ We are therefore limited by what they publish, in particular:
 - iShares EU (UCITS ETFs, provider `IShares_EU`): only latest holdings, from the "latest holdings" CSV each fund page on the iShares UK site publishes. Funds can be looked up by ISIN, eg `query_holdings("IE00B5BMR087")` for CSPX.
 - State Street SPDR EU (UCITS ETFs, provider `SSGA_EU`): only latest holdings, from the daily holdings Excel file each fund page links to. Each holding includes its ISIN and SEDOL.
 - Invesco: only latest holdings
+- Invesco EU (UCITS ETFs, provider `Invesco_EU`): only latest holdings, with name, ISIN, weight and currency (no share counts or market values). Synthetic (swap based) ETFs report their substitute basket; `InvescoEUListings.retrieve_holdings(ticker, isin, variation="index")` returns the tracked index instead. Commodity ETCs (eg physical gold) have no holdings.
 - Vanguard: only the latest month end holdings. Vanguard rounds weights to 2 decimals, so for funds with thousands of small holdings (eg BND, VT) the `weight` column sums to well under 100. Use `market_value` for exact proportions.
 
 Also there are other ETF providers which I haven't implemented. Any pull requests to implement others are welcome!
