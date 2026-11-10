@@ -107,8 +107,10 @@ def strip_str_cols(df: pd.DataFrame, cols: Sequence):
 def _get_trd_dates(start_date: str, end_date: str, exchange: str) -> pd.DatetimeIndex:
     import pandas_market_calendars as mcal
 
+    # The schedule index holds one (tz naive) date per trading session. This avoids
+    # mcal.date_range, which fails on single day schedules with pandas 2.x
     schedule = mcal.get_calendar(exchange).schedule(start_date, end_date)
-    return mcal.date_range(schedule, frequency="1D").normalize().drop_duplicates()
+    return pd.DatetimeIndex(schedule.index).normalize().drop_duplicates()
 
 
 def get_interval_query_dates(
@@ -128,7 +130,7 @@ def get_interval_query_dates(
     - exchange: The exchange schedule to use when trading_days=True
     """
     if not trading_days:
-        freq = "BM" if month_ends else "B"
+        freq = "BME" if month_ends else "B"
         return pd.date_range(start_date, end_date, freq=freq).date
 
     if not month_ends:
@@ -140,7 +142,7 @@ def get_interval_query_dates(
     date_range = _get_trd_dates(start_date, end_date_, exchange)
     day_series = pd.Series(date_range, index=date_range)
 
-    month_end_trd_days = day_series.groupby(pd.Grouper(freq="M")).last()
+    month_end_trd_days = day_series.groupby(pd.Grouper(freq="ME")).last()
     month_end_trd_days_ = pd.Series(month_end_trd_days, index=month_end_trd_days)
     return month_end_trd_days_.loc[start_date:end_date].index.date
 

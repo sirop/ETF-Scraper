@@ -26,7 +26,8 @@ DATA_DIR = Path(__file__).parent.joinpath("test_data")
 
 def _read_file(filename, read_mode):
     resp_file = str(DATA_DIR.joinpath(filename))
-    with open(resp_file, read_mode) as f:
+    encoding = None if "b" in read_mode else "utf-8"  # Windows defaults to cp1252
+    with open(resp_file, read_mode, encoding=encoding) as f:
         return f.read()
 
 
