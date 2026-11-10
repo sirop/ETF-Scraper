@@ -113,7 +113,7 @@ def list_existing_data(
         """
 
     ticker_dates = pd.read_gbq(query, project_id=project_id, dialect="standard")
-    ticker_dates.loc[:, "as_of_date"] = pd.to_datetime(ticker_dates["as_of_date"])
+    ticker_dates["as_of_date"] = pd.to_datetime(ticker_dates["as_of_date"])
     return ticker_dates
 
 

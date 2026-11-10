@@ -127,14 +127,14 @@ class InvescoListings(ProviderListings):
             .rename(columns=cls.listings_resp_mapping)
             .dropna(subset=["ticker"])
         )
-        listings_df_.loc[:, "inception_date"] = pd.to_datetime(
+        listings_df_["inception_date"] = pd.to_datetime(
             listings_df_["inception_date"], errors="coerce"
         ).dt.date
-        listings_df_.loc[:, "product_url"] = listings_df_["ticker"].apply(
+        listings_df_["product_url"] = listings_df_["ticker"].apply(
             lambda x: cls.item_url.format(x)
         )
-        listings_df_.loc[:, "fund_type"] = "ETF"
-        listings_df_.loc[:, "provider"] = cls.provider
+        listings_df_["fund_type"] = "ETF"
+        listings_df_["provider"] = cls.provider
 
         return listings_df_.reset_index(drop=True)
 
@@ -179,7 +179,7 @@ class InvescoListings(ProviderListings):
 
         strip_str_cols(holdings_df_, ["ticker", "cusip"])
         set_numeric_cols(holdings_df_, cls.numeric_cols)
-        holdings_df_.loc[:, "as_of_date"] = as_of_date
+        holdings_df_["as_of_date"] = as_of_date
 
         expected = holdings_resp.get("totalNumberOfHoldings")
         if expected is not None and int(expected) != len(holdings_df_):
@@ -207,7 +207,7 @@ class InvescoListings(ProviderListings):
         if ret_cusip:
             check_data_mismatch(cusip, ret_cusip, "cusip", raise_error=True)
 
-        holdings_df.loc[:, "fund_ticker"] = ticker.upper()
+        holdings_df["fund_ticker"] = ticker.upper()
         return holdings_df
 
     @classmethod

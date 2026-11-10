@@ -131,13 +131,13 @@ class SSGAListings(ProviderListings):
             except:
                 return pd.NaT
 
-        ssga_web_data_df_.loc[:, "inception_date"] = ssga_web_data_df_[
+        ssga_web_data_df_["inception_date"] = ssga_web_data_df_[
             "inception_date"
         ].apply(parse_date)
-        ssga_web_data_df_.loc[:, "net_assets"] = ssga_web_data_df_["net_assets"].apply(
+        ssga_web_data_df_["net_assets"] = ssga_web_data_df_["net_assets"].apply(
             parse_aum
         )
-        ssga_web_data_df_.loc[:, "product_url"] = ssga_web_data_df_[
+        ssga_web_data_df_["product_url"] = ssga_web_data_df_[
             "product_url"
         ].apply(lambda x: safe_urljoin(cls.host, x))
         return ssga_web_data_df_
@@ -152,7 +152,7 @@ class SSGAListings(ProviderListings):
             ["ticker", "asset_class", "cusip", "isin", "benchmark"]
         ]
         ssga_listings = ssga_web_data_df.merge(ssga_doc_df_, how="left", on="ticker")
-        ssga_listings.loc[:, "provider"] = cls.provider
+        ssga_listings["provider"] = cls.provider
         return ssga_listings
 
     @classmethod
@@ -186,7 +186,7 @@ class SSGAListings(ProviderListings):
         ).rename(columns=cls.etf_holdings_col_map)
 
         for col, na_vals in cls.holdings_na_rep.items():
-            holdings_df.loc[:, col] = holdings_df[col].replace(na_vals, np.nan)
+            holdings_df[col] = holdings_df[col].replace(na_vals, np.nan)
 
         strip_str_cols(holdings_df, ["ticker"])
         set_numeric_cols(holdings_df, ["weight", "amount"])
@@ -210,8 +210,8 @@ class SSGAListings(ProviderListings):
                 f"Response ticker {resp_ticker} doesn't match the query ticker {ticker}"
             )
 
-        holdings_df.loc[:, "fund_ticker"] = ticker
-        holdings_df.loc[:, "as_of_date"] = pd.to_datetime(resp_holdings_date)
+        holdings_df["fund_ticker"] = ticker
+        holdings_df["as_of_date"] = pd.to_datetime(resp_holdings_date)
         return holdings_df
 
     @classmethod

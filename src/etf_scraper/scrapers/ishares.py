@@ -136,7 +136,7 @@ class ISharesListings(ProviderListings):
         )
 
         build_url = lambda x: safe_urljoin(cls.host, x)
-        resp_df_.loc[:, "product_url"] = resp_df_["product_url"].apply(build_url)
+        resp_df_["product_url"] = resp_df_["product_url"].apply(build_url)
 
         def parse_date(x):
             if date_ := x.get("r", None):
@@ -154,10 +154,10 @@ class ISharesListings(ProviderListings):
 
         parse_fund_type = lambda x: cls._fund_type_map.get(x[0].lower(), np.nan)
 
-        resp_df_.loc[:, "inception_date"] = resp_df_["inception_date"].apply(parse_date)
-        resp_df_.loc[:, "net_assets"] = resp_df_["net_assets"].apply(parse_net)
-        resp_df_.loc[:, "fund_type"] = resp_df_["fund_type"].apply(parse_fund_type)
-        resp_df_.loc[:, "provider"] = cls.provider
+        resp_df_["inception_date"] = resp_df_["inception_date"].apply(parse_date)
+        resp_df_["net_assets"] = resp_df_["net_assets"].apply(parse_net)
+        resp_df_["fund_type"] = resp_df_["fund_type"].apply(parse_fund_type)
+        resp_df_["provider"] = cls.provider
         return resp_df_.reset_index(drop=True)
 
     @classmethod
@@ -236,7 +236,7 @@ class ISharesListings(ProviderListings):
                 parsed_dates = holdings_df[col].apply(_parse_holdings_date_)
                 holdings_df[col] = pd.to_datetime(parsed_dates)
             elif col in cls.holdings_string_cols:
-                holdings_df.loc[:, col] = holdings_df[col].astype(str)
+                holdings_df[col] = holdings_df[col].astype(str)
 
         holdings_df = holdings_df[~holdings_df["weight"].isna()]
 
@@ -285,8 +285,8 @@ class ISharesListings(ProviderListings):
                 holdings_date, as_of_date, "holdings date", raise_error=True
             )
 
-        holdings_df.loc[:, "fund_ticker"] = ticker
-        holdings_df.loc[:, "as_of_date"] = pd.to_datetime(as_of_date)
+        holdings_df["fund_ticker"] = ticker
+        holdings_df["as_of_date"] = pd.to_datetime(as_of_date)
         return holdings_df
 
     @classmethod

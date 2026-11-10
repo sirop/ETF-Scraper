@@ -121,10 +121,10 @@ class VanguardListings(ProviderListings):
 
         fund_df_ = fund_df_.reindex(columns=list(cls.listing_resp_mapping.values()))
 
-        fund_df_.loc[:, "fund_type"] = fund_types
+        fund_df_["fund_type"] = fund_types
 
         map_to_url = lambda x: cls.fund_url.format(x.upper())
-        fund_df_.loc[:, "product_url"] = fund_df_["ticker"].apply(map_to_url)
+        fund_df_["product_url"] = fund_df_["ticker"].apply(map_to_url)
 
         def parse_inception_date(x):
             try:
@@ -132,10 +132,10 @@ class VanguardListings(ProviderListings):
             except:
                 return pd.NaT
 
-        fund_df_.loc[:, "inception_date"] = fund_df_["inception_date"].apply(
+        fund_df_["inception_date"] = fund_df_["inception_date"].apply(
             parse_inception_date
         )
-        fund_df_.loc[:, "provider"] = cls.provider
+        fund_df_["provider"] = cls.provider
 
         return fund_df_
 
@@ -170,14 +170,14 @@ class VanguardListings(ProviderListings):
             columns=list(cls.holding_col_mapping)
         ).rename(columns=cls.holding_col_mapping)
 
-        holdings_df.loc[:, "as_of_date"] = holdings_df["as_of_date"].apply(
+        holdings_df["as_of_date"] = holdings_df["as_of_date"].apply(
             cls._parse_vanguard_date
         )
         holdings_df["as_of_date"] = pd.to_datetime(holdings_df["as_of_date"])
         holdings_df["maturity_date"] = pd.to_datetime(
             holdings_df["maturity_date"].apply(cls._parse_vanguard_date)
         )
-        holdings_df.loc[:, "holding_category"] = category
+        holdings_df["holding_category"] = category
 
         # Vanguard sends blanks rather than nulls for missing identifiers
         id_cols = ["ticker", "sedol", "cusip", "isin", "security_type", "security_subtype", "holding_type"]
@@ -255,7 +255,7 @@ class VanguardListings(ProviderListings):
             )
 
         holdings_df = pd.concat(frames, ignore_index=True)
-        holdings_df.loc[:, "fund_ticker"] = fund_ticker
+        holdings_df["fund_ticker"] = fund_ticker
         return holdings_df
 
     @classmethod

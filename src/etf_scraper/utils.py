@@ -101,7 +101,7 @@ def strip_str_cols(df: pd.DataFrame, cols: Sequence):
             return s
 
     for col in cols:
-        df.loc[:, col] = df[col].apply(strip_)
+        df[col] = df[col].apply(strip_)
 
 
 def _get_trd_dates(start_date: str, end_date: str, exchange: str) -> pd.DatetimeIndex:

@@ -58,7 +58,7 @@ def subset_invesco(invesco_listings) -> pd.DataFrame:
 
     invesco_listings_ = invesco_listings.copy()
     mkt_vals = invesco_listings_["ticker"].apply(lambda x: mkt_values_.get(x))
-    invesco_listings_.loc[:, "net_assets"] = mkt_vals
+    invesco_listings_["net_assets"] = mkt_vals
     return invesco_listings_.dropna(subset=["net_assets"])
 
 
