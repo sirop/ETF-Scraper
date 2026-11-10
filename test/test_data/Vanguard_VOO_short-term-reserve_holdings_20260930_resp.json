@@ -1,0 +1,49 @@
+{
+ "size": 2,
+ "asOfDate": "2026-09-30T00:00:00-04:00",
+ "self": {
+  "type": "application/xml,application/json",
+  "href": "http://api.vanguard.com/rs/ire/01/ind/fund/VOO/portfolio-holding/short-term-reserve?start=1&count=20000",
+  "ref": "self"
+ },
+ "fund": {
+  "entity": [
+   {
+    "type": "portfolioHolding",
+    "asOfDate": "2026-09-30T00:00:00-04:00",
+    "longName": "Vanguard Market Liquidity Fund",
+    "shortName": "CMT MARKET LIQUIDITY RATE",
+    "sharesHeld": "887152710",
+    "marketValue": 887063994.93,
+    "faceAmount": "887063995",
+    "ticker": "",
+    "isin": "",
+    "percentWeight": "0.05",
+    "notionalValue": "0",
+    "secMainType": "",
+    "secSubType": "",
+    "holdingType": "",
+    "cusip": "CMT001142",
+    "sedol": ""
+   },
+   {
+    "type": "portfolioHolding",
+    "asOfDate": "2026-09-30T00:00:00-04:00",
+    "longName": "Vanguard Market Liquidity Fund",
+    "shortName": "CMT MARKET LIQUIDITY RATE",
+    "sharesHeld": "61504",
+    "marketValue": 6149785.96,
+    "faceAmount": "6149786",
+    "ticker": "",
+    "isin": "",
+    "percentWeight": "0.00",
+    "notionalValue": "0",
+    "secMainType": "",
+    "secSubType": "",
+    "holdingType": "",
+    "cusip": "SLBBH1142",
+    "sedol": ""
+   }
+  ]
+ }
+}

@@ -81,7 +81,9 @@ def set_numeric_cols(df: pd.DataFrame, cols: Sequence):
     """Apply pd.to_numeric in-place to the given dataframe for cols"""
 
     for col in cols:
-        df.loc[:, col] = pd.to_numeric(df[col])
+        # plain assignment so the column dtype becomes numeric (pandas 2 keeps the
+        # old dtype with .loc[:, col] assignment)
+        df[col] = pd.to_numeric(df[col])
 
 
 def strip_str_cols(df: pd.DataFrame, cols: Sequence):

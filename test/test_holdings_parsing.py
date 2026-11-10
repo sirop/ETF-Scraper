@@ -11,7 +11,9 @@ from pathlib import Path
 
 import pytest
 import numpy as np
+import pandas as pd
 
+from etf_scraper.edgar import parse_nport_xml
 from etf_scraper.scrapers import (
     ISharesListings,
     InvescoListings,
@@ -45,13 +47,33 @@ def ssga_test_resp():
 
 @pytest.fixture
 def vanguard_test_resp():
-    resp_file = _read_file("Vanguard_VOO_holdings_20221130_resp.json", "r")
-    return json.loads(resp_file)
+    return json.loads(
+        _read_file("Vanguard_VOO_stock_holdings_20260930_resp.json", "r")
+    )
+
+
+@pytest.fixture
+def vanguard_str_test_resp():
+    return json.loads(
+        _read_file("Vanguard_VOO_short-term-reserve_holdings_20260930_resp.json", "r")
+    )
+
+
+@pytest.fixture
+def vanguard_bond_test_resp():
+    return json.loads(
+        _read_file("Vanguard_BND_bond_holdings_20260930_resp_page1.json", "r")
+    )
 
 
 @pytest.fixture
 def invesco_test_resp():
-    return _read_file("Invesco_QQQ_holdings_20230113.csv", "rb")
+    return json.loads(_read_file("Invesco_QQQ_holdings_20261109_resp.json", "r"))
+
+
+@pytest.fixture
+def nport_test_resp():
+    return _read_file("NPORT_QQQ_20260630_primary_doc.xml", "rb")
 
 
 def check_holdings_df(
@@ -145,66 +167,122 @@ def test_ssga_etf_holdings_resp_parser(ssga_test_resp):
     )
 
 
-def test_vanguard_etf_holdings_resp_parser(vanguard_test_resp):
-    """Attempt to cross check response with a direct holdings file download.
+def _as_dates(series):
+    """Normalise a date/Timestamp column to a list of unique datetime.date"""
+    return sorted({pd.Timestamp(x).date() for x in series.dropna().unique()})
 
-    There are differences in the API response vs the direct file:
-    - Due to rounding errors in the file we can't compare weights exactly
-    - The api returns futures positions, but the file excludes these.
-    """
-    # exp_ticker = "VOO"
-    exp_item_id = "0968"
-    exp_holdings_date = date(year=2022, month=11, day=30)
+
+def test_vanguard_etf_holdings_resp_parser(vanguard_test_resp):
+    """VOO stock holdings from investor.vanguard.com/vmf/api/VOO/portfolio-holding/stock.json"""
+    exp_holdings_date = date(year=2026, month=9, day=30)
 
     # calculated directly from the file
-    exp_tot_holdings = 7281027674
-    exp_tot_mkt_val = 784925323154.07
+    exp_tot_holdings = 9633605676
+    exp_tot_mkt_val = 1730342128089.43
+    exp_weight = 100.03
 
-    holdings_df, ret_item_id = VanguardListings._parse_holdings_resp(vanguard_test_resp)
-
-    assert ret_item_id == exp_item_id
-
-    holdings_date = holdings_df["as_of_date"].drop_duplicates()
-    assert list(holdings_date) == [exp_holdings_date]
-
-    holdings_df_ = holdings_df[
-        (~holdings_df["ticker"].isna()) & (holdings_df["security_type"] == "Equity")
-    ]  # remove S&P500 futures + short term reserves
-
-    check_holdings_df(
-        holdings_df_,
-        exp_tot_holdings,
-        exp_tot_mkt_val,
-        None,
-        None,
-        None,
+    holdings_df, as_of_date = VanguardListings._parse_holdings_resp(
+        vanguard_test_resp, "stock"
     )
 
-
-def test_invesco_etf_holdings_resp_parser(invesco_test_resp):
-    exp_ticker = "QQQ"
-    exp_holdings_date = date(year=2023, month=1, day=13)
-
-    # calculated directly from the file
-    exp_tot_holdings = 1362477212
-    exp_weight = 100.004
-    exp_tot_mkt_val = 149376907881
-
-    holdings_df = InvescoListings._parse_holdings_resp(invesco_test_resp)
-
-    holdings_date = holdings_df["as_of_date"].drop_duplicates()
-    assert list(holdings_date) == [exp_holdings_date]
-
-    assert list(holdings_df["fund_ticker"].unique()) == [exp_ticker]
+    assert as_of_date.date() == exp_holdings_date
+    assert _as_dates(holdings_df["as_of_date"]) == [exp_holdings_date]
+    assert len(holdings_df) == 503
+    assert set(holdings_df["holding_category"]) == {"stock"}
+    assert holdings_df["weight"].dtype.kind == "f"
 
     check_holdings_df(
         holdings_df,
         exp_tot_holdings,
         exp_tot_mkt_val,
-        exp_first_ticker="MSFT",
-        exp_last_ticker="LCID",
+        exp_first_ticker="NVDA",
+        exp_last_ticker="NWS",
         exp_weight=exp_weight,
     )
+
+
+def test_vanguard_short_term_reserve_resp_parser(vanguard_str_test_resp):
+    """Cash positions have blank tickers, which should become NaN"""
+    holdings_df, _ = VanguardListings._parse_holdings_resp(
+        vanguard_str_test_resp, "short-term-reserve"
+    )
+    assert len(holdings_df) == 2
+    assert holdings_df["ticker"].isna().all()
+    assert holdings_df["amount"].sum() == 887214214
+    assert np.isclose(holdings_df["market_value"].sum(), 893213780.89)
+
+
+def test_vanguard_bond_resp_parser(vanguard_bond_test_resp):
+    """Bond holdings include coupon/maturity columns. This is the first page only."""
+    holdings_df, as_of_date = VanguardListings._parse_holdings_resp(
+        vanguard_bond_test_resp, "bond"
+    )
+    assert as_of_date.date() == date(year=2026, month=9, day=30)
+    assert len(holdings_df) == 200
+    assert np.isclose(holdings_df["market_value"].sum(), 219143253334.46)
+    assert holdings_df["coupon"].notna().any()
+    assert holdings_df["maturity_date"].notna().any()
+
+
+def test_vanguard_empty_category_resp_parser():
+    """A category the fund doesn't hold comes back with size 0 and no entities"""
+    resp = {"size": 0, "asOfDate": "2026-09-30T00:00:00-04:00"}
+    holdings_df, as_of_date = VanguardListings._parse_holdings_resp(resp, "bond")
+    assert holdings_df.empty
+    assert as_of_date.date() == date(year=2026, month=9, day=30)
+
+
+def test_invesco_etf_holdings_resp_parser(invesco_test_resp):
+    """QQQ holdings from dng-api.invesco.com/.../shareclasses/46090E103/holdings/fund"""
+    exp_holdings_date = date(year=2026, month=11, day=9)
+
+    # calculated directly from the file
+    exp_tot_holdings = 3008502642.2431
+    exp_weight = 100.000003
+    exp_tot_mkt_val = 463824631864.85
+
+    holdings_df, as_of_date, cusip = InvescoListings._parse_holdings_resp(
+        invesco_test_resp
+    )
+
+    assert cusip == "46090E103"
+    assert as_of_date.date() == exp_holdings_date
+    assert _as_dates(holdings_df["as_of_date"]) == [exp_holdings_date]
+    assert len(holdings_df) == 106
+
+    assert np.isclose(holdings_df["amount"].sum(), exp_tot_holdings)
+    check_holdings_df(
+        holdings_df,
+        holdings_df["amount"].sum(),  # float units, checked approximately above
+        exp_tot_mkt_val,
+        exp_first_ticker="AAPL",
+        exp_last_ticker="USDPDV",
+        exp_weight=exp_weight,
+    )
+
+
+def test_nport_holdings_parser(nport_test_resp):
+    """QQQ N-PORT filing (primary_doc.xml) for 2026-06-30 from SEC EDGAR"""
+    holdings_df = parse_nport_xml(nport_test_resp)
+
+    assert len(holdings_df) == 105
+    assert _as_dates(holdings_df["as_of_date"]) == [date(year=2026, month=6, day=30)]
+    assert set(holdings_df["series_id"]) == {"S000101292"}
+    assert np.isclose(holdings_df["net_assets"].iloc[0], 490103179941.66)
+
+    assert np.isclose(holdings_df["amount"].sum(), 3948756511.2031)
+    assert np.isclose(holdings_df["market_value"].sum(), 491485797052.9205)
+    assert np.isclose(holdings_df["weight"].sum(), 100.282107353626)
+
+    assert holdings_df["cusip"].iloc[0] == "G25839104"
+    assert holdings_df["cusip"].iloc[-1] == "02079K107"
+    # cash sweep funds and the futures position have no ISIN
+    assert holdings_df["isin"].isna().sum() == 3
+
+    # futures are reported with name "N/A", the parser falls back to the title
+    futures = holdings_df[holdings_df["asset_category"] == "DE"]
+    assert list(futures["name"]) == ["CME E-Mini NASDAQ 100 Index Future"]
+    assert list(futures["ticker"]) == ["NQU6"]
 
 
 def test_ishares_dupl_holdings_resp_parser(ishares_test_dupl_resp):

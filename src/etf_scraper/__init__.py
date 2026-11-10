@@ -5,3 +5,8 @@ from etf_scraper.api import (
 )
 
 from etf_scraper.api import Provider
+
+from etf_scraper.edgar import (
+    query_nport_holdings,
+    list_nport_filings,
+)

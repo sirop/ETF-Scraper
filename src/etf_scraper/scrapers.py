@@ -530,31 +530,50 @@ class VanguardListings(ProviderListings):
     }
     fund_url = "https://advisors.vanguard.com/investments/products/{}"
 
+    # Vanguard splits holdings by category, each served from its own endpoint.
+    # A fund returns an empty list for the categories it doesn't hold.
+    holding_categories = ["stock", "bond", "short-term-reserve"]
+    holdings_page_size = 20000
+
     holding_col_mapping = {
-        "effectiveDate": "as_of_date",
-        "bticker": "ticker",
+        "asOfDate": "as_of_date",
+        "ticker": "ticker",
         "sedol": "sedol",
-        "CUSIP": "cusip",
-        "name": "name",
-        "quantity": "amount",
-        "mktValPercent": "weight",
-        "parentIssueTypeName": "security_type",
-        "sector": "sector",
-        "market": "exchange",
-        "marketVal": "market_value",
-        "countryOfRiskCode": "location",
+        "cusip": "cusip",
+        "isin": "isin",
+        "longName": "name",
+        "sharesHeld": "amount",
+        "percentWeight": "weight",
+        "secMainType": "security_type",
+        "secSubType": "security_subtype",
+        "holdingType": "holding_type",
+        "marketValue": "market_value",
+        "notionalValue": "notional_value",
+        "faceAmount": "face_amount",
+        "couponRate": "coupon",
+        "maturityDate": "maturity_date",
     }
+    numeric_cols = [
+        "amount",
+        "weight",
+        "market_value",
+        "notional_value",
+        "face_amount",
+        "coupon",
+    ]
 
     @classmethod
-    def holdings_endpoint(cls, product_id: str) -> str:
-        """Endpoint to send a GET request to for querying holdings.
+    def holdings_endpoint(cls, ticker: str, category: str = "stock") -> str:
+        """Endpoint to send a GET request to for querying holdings of one category
+        (stock/bond/short-term-reserve).
 
-        Note: can also append `as-of-date=YYYY-MM-DD` in the payload to request a specific
-        date, but Vanguard will only return end of month holdings.
+        Note: as of Nov 2026 this only serves the latest month end holdings. Date
+        parameters are dropped by Vanguard's proxy, so historical holdings must come
+        from SEC N-PORT filings instead (see etf_scraper.edgar).
         """
         return (
-            "https://eds.ecs.gisp.c1.vanguard.com/eds-eip-distributions-service/"
-            f"holdings/holding-details-history/{product_id}.json"
+            "https://investor.vanguard.com/vmf/api/"
+            f"{ticker.upper()}/portfolio-holding/{category}.json"
         )
 
     @classmethod
@@ -563,6 +582,7 @@ class VanguardListings(ProviderListings):
         #TODO: missing important info: eg AUM, country etf - not possible to get without visiting individual
         fund pages
         #FIXME: duplicates via multiple share classes, eg VFIAX, VFFSX, VOO
+        #FIXME: as of Nov 2026 the listing endpoint returns HTML instead of JSON.
         """
         resp = requests.get(cls.listing_endpoint, headers=cls.req_user_header)
         resp.raise_for_status()
@@ -606,81 +626,123 @@ class VanguardListings(ProviderListings):
 
         return fund_df_
 
-    @classmethod
-    def _parse_holdings_resp(cls, holdings_resp):
-        """Parse the response from (a hidden) Vanguard API for holdings data"""
-        assert len(holdings_resp) == 1
-        holdings_resp_ = holdings_resp[0]
+    @staticmethod
+    def _parse_vanguard_date(date_str) -> Union[pd.Timestamp, None]:
+        """Vanguard dates look like '2026-09-30T00:00:00-04:00'. Keep the local date only."""
+        if not isinstance(date_str, str) or not date_str:
+            return pd.NaT
+        return pd.Timestamp(date_str[:10])
 
-        ret_item_id = holdings_resp_["portId"]
-        holdings_df_raw = pd.DataFrame(holdings_resp_["holdingDetailItem"])
+    @classmethod
+    def _parse_holdings_resp(cls, holdings_resp: dict, category: str = "stock"):
+        """Parse one response from the Vanguard holdings API.
+
+        Returns (holdings_df, as_of_date). holdings_df is empty if the fund has no
+        holdings in this category.
+        """
+        as_of_date = cls._parse_vanguard_date(holdings_resp.get("asOfDate"))
+        entities = (holdings_resp.get("fund") or {}).get("entity") or []
+
+        holdings_df_raw = pd.DataFrame(entities)
+        if holdings_df_raw.empty:
+            return pd.DataFrame(columns=list(cls.holding_col_mapping.values())), as_of_date
 
         check_missing_cols(
-            ["effectiveDate", "bticker", "quantity"],
+            ["asOfDate", "longName", "sharesHeld", "marketValue", "percentWeight"],
             holdings_df_raw.columns,
             raise_error=True,
         )
-        check_missing_cols(list(cls.holding_col_mapping), holdings_df_raw.columns)
 
         holdings_df = holdings_df_raw.reindex(
             columns=list(cls.holding_col_mapping)
         ).rename(columns=cls.holding_col_mapping)
-        holdings_df.loc[:, "as_of_date"] = pd.to_datetime(holdings_df["as_of_date"])
 
-        strip_str_cols(holdings_df, ["ticker"])
-        set_numeric_cols(holdings_df, ["amount", "market_value", "weight"])
+        holdings_df.loc[:, "as_of_date"] = holdings_df["as_of_date"].apply(
+            cls._parse_vanguard_date
+        )
+        holdings_df["as_of_date"] = pd.to_datetime(holdings_df["as_of_date"])
+        holdings_df["maturity_date"] = pd.to_datetime(
+            holdings_df["maturity_date"].apply(cls._parse_vanguard_date)
+        )
+        holdings_df.loc[:, "holding_category"] = category
 
-        return holdings_df, ret_item_id
+        # Vanguard sends blanks rather than nulls for missing identifiers
+        id_cols = ["ticker", "sedol", "cusip", "isin", "security_type", "security_subtype", "holding_type"]
+        strip_str_cols(holdings_df, id_cols)
+        for col in id_cols:
+            holdings_df[col] = holdings_df[col].where(holdings_df[col] != "", np.nan)
+        # Vanguard sometimes sends placeholders like "?" (eg faceAmount for BND), so
+        # treat anything unparseable as missing rather than failing the whole fund
+        for col in cls.numeric_cols:
+            holdings_df[col] = pd.to_numeric(holdings_df[col], errors="coerce")
+
+        return holdings_df, as_of_date
+
+    @classmethod
+    def _query_holdings_category(cls, ticker: str, category: str):
+        """Query all pages of one holdings category for the given ticker."""
+        url = cls.holdings_endpoint(ticker, category)
+        frames, as_of_date, start = [], None, 1
+
+        while True:
+            params = {"start": start, "count": cls.holdings_page_size}
+            resp = requests.get(url, params=params)
+            resp.raise_for_status()
+            resp_data = resp.json()
+
+            page_df, page_date = cls._parse_holdings_resp(resp_data, category)
+            as_of_date = page_date if as_of_date is None else as_of_date
+            if not page_df.empty:
+                frames.append(page_df)
+
+            total = int(resp_data.get("size") or 0)
+            start += cls.holdings_page_size
+            if page_df.empty or start > total:
+                break
+
+        holdings_df = pd.concat(frames, ignore_index=True) if frames else None
+        return holdings_df, as_of_date
 
     @classmethod
     def retrieve_holdings(
-        cls, fund_ticker: str, product_id: str, holdings_date: Union[date, None] = None
+        cls, fund_ticker: str, holdings_date: Union[date, None] = None
     ) -> pd.DataFrame:
-        """
+        """Retrieve the latest month end holdings for a Vanguard ETF/MF.
+
         Args:
-        - fund_ticker: ETF/MF ticker. This is only for appending to the returned dataframe
-        for consistency. It doesn't validate this corresponds to the given product_id.
-        - product_id: the internal ID Vanguard uses for their products, eg 0968 -> VOO
-        - holdings_date: holdings date to query. If not given then will default to the previous
-        month end.
+        - fund_ticker: ETF/MF ticker, eg VOO
+        - holdings_date: if given, must equal the latest month end Vanguard publishes,
+        otherwise raises InvalidParameterError. For older dates use etf_scraper.edgar.
 
         Note: ticker may be missing, eg for short-term reserve positions
         """
-        if not holdings_date:
-            date_now = datetime.now().date().replace(day=1)
-            holdings_date = date_now - relativedelta(days=1)
-            logger.debug(
-                f"No holdings date given, defaulting to the previous month end {holdings_date}"
-            )
+        frames, as_of_dates = [], set()
+        for category in cls.holding_categories:
+            logger.debug(f"Querying Vanguard {category} holdings for {fund_ticker}")
+            cat_df, cat_date = cls._query_holdings_category(fund_ticker, category)
+            if cat_df is not None:
+                frames.append(cat_df)
+                as_of_dates.add(cat_date)
 
-        url = cls.holdings_endpoint(product_id)
-        payload = {"as-of-date": holdings_date.strftime("%Y-%m-%d")}
-
-        resp = requests.get(
-            url, params=payload, headers=VanguardListings.req_user_header
-        )
-        resp.raise_for_status()
-        resp_data = resp.json()
-
-        if not resp_data:  # will silently return no data
+        if not frames:
             raise InvalidParameterError(
-                f"No Vanguard data returned for ticker: {fund_ticker}, date: {holdings_date}"
+                f"No Vanguard holdings returned for ticker: {fund_ticker}"
+            )
+        if len(as_of_dates) > 1:
+            raise ValueError(
+                f"Vanguard returned multiple holdings dates for {fund_ticker}: {sorted(as_of_dates)}"
             )
 
-        holdings_df, ret_product_id = cls._parse_holdings_resp(resp_data)
-        check_data_mismatch(product_id, ret_product_id, "product id", raise_error=True)
+        ret_holdings_date = as_of_dates.pop().date()
+        if holdings_date and holdings_date != ret_holdings_date:
+            raise InvalidParameterError(
+                f"Vanguard only provides the latest month end holdings ({ret_holdings_date}), "
+                f"not {holdings_date}. Use etf_scraper.edgar.query_nport_holdings for "
+                "historical holdings."
+            )
 
-        ret_holdings_date = holdings_df["as_of_date"].drop_duplicates()
-
-        if len(ret_holdings_date) > 1:
-            raise ValueError(f"Multiple holding dates returned: {ret_holdings_date}")
-
-        ret_holdings_date = ret_holdings_date[0].date()
-        check_data_mismatch(
-            holdings_date, ret_holdings_date, "holdings date", raise_error=True
-        )
+        holdings_df = pd.concat(frames, ignore_index=True)
         holdings_df.loc[:, "fund_ticker"] = fund_ticker
-
         return holdings_df
 
     @classmethod
@@ -689,32 +751,50 @@ class VanguardListings(ProviderListings):
     ) -> pd.DataFrame:
         """Retrieve Vanguard ETF/MF holdings.
 
-        Note: as of writing, Vanguard only provides month end data.
+        Note: as of writing, Vanguard only provides the latest month end data.
         """
         _check_exp_provider(sec_listing.provider, cls.provider, cls.__name__)
-        return cls.retrieve_holdings(
-            sec_listing.ticker, sec_listing.product_id, holdings_date
-        )
+        return cls.retrieve_holdings(sec_listing.ticker, holdings_date)
 
 
 class InvescoListings(ProviderListings):
-    """TODO: Currently only works for ETF data (ie we are missing Invesco MFs)"""
+    """Invesco ETFs via Invesco's public JSON API (dng-api.invesco.com).
+
+    TODO: Currently only works for ETF data (ie we are missing Invesco MFs)
+    """
 
     provider = Provider.Invesco.value
 
-    date_fmt = "%m/%d/%Y"
-    listings_url = (
-        "https://www.invesco.com/us/financial-products/etfs/performance/prices/main/"
-        "performance/0?audienceType=Advisor&action=download"
+    api_host = "https://dng-api.invesco.com"
+    search_endpoint = api_host + "/product/search"
+    holdings_endpoint_fmt = (
+        api_host + "/cache/v1/accounts/en_US/shareclasses/{cusip}/holdings/fund"
     )
+    # Invesco's firewall rejects clients imitating a browser, so identify honestly
+    req_headers = {
+        "Accept": "application/json",
+        "User-Agent": "etf-scraper (+https://github.com/nikulpatel3141/ETF-Scraper)",
+    }
+
+    search_fields = [
+        "ticker",
+        "cusip",
+        "title",
+        "isin",
+        "inceptionDate",
+        "assetClass",
+        "assetSubClass",
+        "url",
+    ]
     listings_resp_mapping = {
-        "Name": "fund_name",
-        "Ticker": "ticker",
-        "Inception_Date": "inception_date",
-        "Index_Ticker": "benchmark",
-        "CUSIP": "cusip",
-        "ISIN": "isin",
-        "Exchange": "exchange",
+        "title": "fund_name",
+        "ticker": "ticker",
+        "inceptionDate": "inception_date",
+        "cusip": "cusip",
+        "isin": "isin",
+        "assetClass": "asset_class",
+        "assetSubClass": "subasset_class",
+        "url": "product_url",
     }
 
     item_url = (
@@ -722,133 +802,143 @@ class InvescoListings(ProviderListings):
         "product-detail?audienceType=Investor&ticker={}"
     )
 
-    holdings_url = (
-        "https://www.invesco.com/us/financial-products/etfs/holdings/main/holdings/"
-        "0?audienceType=Investor&action=download&ticker={}"
-    )
     holdings_resp_mapping = {
-        "Fund Ticker": "fund_ticker",
-        "Security Identifier": "cusip",
-        "Holding Ticker": "ticker",
-        "Shares/Par Value": "amount",
-        "MarketValue": "market_value",
-        "Weight": "weight",
-        "Name": "name",
-        "Class of Shares": "security_type",  # FIXME: is this accurate???
-        "Sector": "sector",
-        "Date": "as_of_date",
-        # below for bond funds
-        "PositionDate": "as_of_date",
-        "CouponRate": "coupon",
-        "MaturityDate": "maturity_date",
-        "Effective Date": "effective_date",
-        "Next_Call_Date": "call_date",
-        "rating": "rating",
-        "PercentageOfFund": "weight",
+        "ticker": "ticker",
+        "cusip": "cusip",
+        "issuerName": "name",
+        "units": "amount",
+        "marketValueBase": "market_value",
+        "percentageOfTotalNetAssets": "weight",
+        "securityTypeName": "security_type",
+        "currency": "currency",
+        "coupon": "coupon",
+        "maturityDate": "maturity_date",
+        "contractExpiryDate": "contract_expiry_date",
     }
-    date_cols = ["as_of_date", "effective_date", "call_date", "maturity_date"]
+    date_cols = ["maturity_date", "contract_expiry_date"]
     numeric_cols = ["amount", "market_value", "weight", "coupon"]
 
     @classmethod
-    def _parse_date(cls, date_str: str) -> date:
-        return datetime.strptime(date_str, cls.date_fmt).date()
+    def _search_products(cls) -> pd.DataFrame:
+        """Query Invesco's product catalog for all open US ETFs."""
+        params = {
+            "fq": [
+                'countryCode:"US"',
+                'language:"en_us"',
+                'accountType:"ETF"',
+                'contentType:"Product"',
+                'shareClassStatus:"open"',
+            ],
+            "q": "_suggest_:*",
+            "fl": ",".join(cls.search_fields),
+            "rows": 1000,
+            "start": 0,
+        }
+        resp = requests.get(cls.search_endpoint, params=params, headers=cls.req_headers)
+        resp.raise_for_status()
+        docs = resp.json()["response"]["docs"]
+
+        # Solr may return multi valued fields as lists, keep the first value
+        flat = [
+            {k: (v[0] if isinstance(v, list) and v else v) for k, v in d.items()}
+            for d in docs
+        ]
+        return pd.DataFrame(flat)
 
     @classmethod
     def retrieve_listings(cls) -> pd.DataFrame:
         """Retrieve all ETF listings from Invesco"""
-        resp = requests.get(cls.listings_url)
-        resp.raise_for_status()
+        listings_df = cls._search_products()
 
-        resp_buffer = StringIO(resp.content.decode())
-        listings_df = pd.read_csv(resp_buffer, skiprows=5)
+        check_missing_cols(["ticker", "cusip"], listings_df.columns, raise_error=True)
+        check_missing_cols(list(cls.listings_resp_mapping), listings_df.columns)
 
-        check_missing_cols(["Ticker"], listings_df, raise_error=True)
-        check_missing_cols(list(cls.listings_resp_mapping), listings_df)
-
-        listings_df_ = listings_df.reindex(
-            columns=list(cls.listings_resp_mapping)
-        ).rename(columns=cls.listings_resp_mapping)
-        listings_df_.loc[:, "inception_date"] = listings_df_["inception_date"].apply(
-            cls._parse_date
+        listings_df_ = (
+            listings_df.reindex(columns=list(cls.listings_resp_mapping))
+            .rename(columns=cls.listings_resp_mapping)
+            .dropna(subset=["ticker"])
         )
+        listings_df_.loc[:, "inception_date"] = pd.to_datetime(
+            listings_df_["inception_date"], errors="coerce"
+        ).dt.date
         listings_df_.loc[:, "product_url"] = listings_df_["ticker"].apply(
             lambda x: cls.item_url.format(x)
         )
         listings_df_.loc[:, "fund_type"] = "ETF"
         listings_df_.loc[:, "provider"] = cls.provider
 
-        return listings_df_
+        return listings_df_.reset_index(drop=True)
 
     @classmethod
-    def _parse_holdings_resp(cls, holdings_resp):
-        """Parse the CSVs Invesco provide for holdings data
-        #TODO: make this work for futures funds too - the returned columns are different
-        # from bond and equity funds.
+    def _resolve_cusip(cls, ticker: str) -> str:
+        """Look up an Invesco ETF's CUSIP from its ticker via the product catalog."""
+        products = cls._search_products()
+        match = products[products["ticker"].str.upper() == ticker.upper()]
+        if match.empty:
+            raise InvalidParameterError(f"Invesco ETF not found for ticker {ticker}")
+        return match["cusip"].iloc[0]
+
+    @classmethod
+    def _parse_holdings_resp(cls, holdings_resp: dict):
+        """Parse the JSON Invesco's API returns for holdings data.
+
+        Returns (holdings_df, as_of_date, cusip).
         """
-        holdings_df = pd.read_csv(StringIO(holdings_resp.decode()), thousands=",")
-        holdings_df.columns = holdings_df.columns.str.strip()
+        as_of_str = holdings_resp.get("effectiveDate") or holdings_resp.get(
+            "effectiveBusinessDate"
+        )
+        if not as_of_str:
+            raise ValueError("Invesco holdings response is missing an effective date")
+        as_of_date = pd.Timestamp(as_of_str[:10])
 
-        exp_date_cols = [
-            "Date",  # for equity funds
-            "PositionDate",  # for bond funds
-        ]
-        check_dupl_cols(exp_date_cols, holdings_df.columns, "date")
-        check_dupl_cols(["Weight", "PercentageOfFund"], holdings_df.columns, "weight")
-
-        if "Date" in holdings_df:  # equity fund
-            exp_cols = ["Holding Ticker", "Shares/Par Value"]
-        else:
-            # for bonds CUSIP is the identifier
-            exp_cols = ["Security Identifier", "Shares/Par Value"]
+        holdings_df = pd.DataFrame(holdings_resp.get("holdings") or [])
+        if holdings_df.empty:
+            raise InvalidParameterError("Invesco returned no holdings")
 
         check_missing_cols(
-            exp_cols,
+            ["issuerName", "units", "percentageOfTotalNetAssets"],
             holdings_df.columns,
             raise_error=True,
         )
 
-        holdings_df_ = holdings_df.rename(columns=cls.holdings_resp_mapping)
-
-        def parse_date(x):
-            try:
-                return cls._parse_date(x)
-            except:
-                return pd.NaT
+        holdings_df_ = holdings_df.reindex(
+            columns=list(cls.holdings_resp_mapping)
+        ).rename(columns=cls.holdings_resp_mapping)
 
         for col in cls.date_cols:
-            if col in holdings_df_:
-                parsed_dates = holdings_df_[col].apply(parse_date)
-                holdings_df_.loc[:, col] = pd.to_datetime(parsed_dates)
+            holdings_df_[col] = pd.to_datetime(holdings_df_[col], errors="coerce")
 
-        strip_str_cols(holdings_df_, ["ticker", "fund_ticker"])
-        set_numeric_cols(
-            holdings_df_, [k for k in cls.numeric_cols if k in holdings_df_]
-        )
-        return holdings_df_
+        strip_str_cols(holdings_df_, ["ticker", "cusip"])
+        set_numeric_cols(holdings_df_, cls.numeric_cols)
+        holdings_df_.loc[:, "as_of_date"] = as_of_date
+
+        expected = holdings_resp.get("totalNumberOfHoldings")
+        if expected is not None and int(expected) != len(holdings_df_):
+            logger.warning(
+                f"Invesco reported {expected} holdings but returned {len(holdings_df_)}"
+            )
+
+        return holdings_df_, as_of_date, holdings_resp.get("cusip")
 
     @classmethod
-    def retrieve_holdings(cls, ticker: str):
-        """Retrieve the latest holdings for the given ETF ticker"""
-        url = cls.holdings_url.format(ticker.upper())
-        resp = requests.get(url)
+    def retrieve_holdings(cls, ticker: str, cusip: Union[str, None] = None):
+        """Retrieve the latest holdings for the given ETF ticker.
+
+        Invesco's API is keyed by CUSIP. If not given, it's looked up from the ticker.
+        """
+        if not cusip or (isinstance(cusip, float) and np.isnan(cusip)):
+            cusip = cls._resolve_cusip(ticker)
+
+        url = cls.holdings_endpoint_fmt.format(cusip=cusip)
+        params = {"idType": "cusip", "productType": "ETF"}
+        resp = requests.get(url, params=params, headers=cls.req_headers)
         resp.raise_for_status()
 
-        holdings_df = cls._parse_holdings_resp(resp.content)
+        holdings_df, _, ret_cusip = cls._parse_holdings_resp(resp.json())
+        if ret_cusip:
+            check_data_mismatch(cusip, ret_cusip, "cusip", raise_error=True)
 
-        holdings_date = holdings_df["as_of_date"].drop_duplicates()
-        if len(holdings_date) > 1:
-            raise ValueError(
-                f"Found multiple holdings dates, was expecting one: {list(holdings_date)}"
-            )
-
-        fund_ticker = holdings_df["fund_ticker"].drop_duplicates()
-        if len(fund_ticker) > 1:
-            raise ValueError(
-                f"Found multiple fund tickers, was expecting one ({ticker}): {list(fund_ticker)}"
-            )
-
-        check_data_mismatch(ticker, fund_ticker[0], "fund ticker")
-
+        holdings_df.loc[:, "fund_ticker"] = ticker.upper()
         return holdings_df
 
     @classmethod
@@ -860,7 +950,8 @@ class InvescoListings(ProviderListings):
 
         if holdings_date:
             raise InvalidParameterError(
-                f"Can only retrieve the latest holdings from Invesco (holdings_date=None)"
+                "Can only retrieve the latest holdings from Invesco (holdings_date=None). "
+                "Use etf_scraper.edgar.query_nport_holdings for historical holdings."
             )
 
-        return cls.retrieve_holdings(sec_listing.ticker)
+        return cls.retrieve_holdings(sec_listing.ticker, sec_listing.cusip)

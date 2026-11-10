@@ -131,9 +131,33 @@ We are therefore limited by what they publish, in particular:
   - recent daily history is also available
 - SSGA: only latest holdings
 - Invesco: only latest holdings
-- Vanguard: only recent month end holdings
+- Vanguard: only the latest month end holdings. Vanguard rounds weights to 2 decimals, so for funds with thousands of small holdings (eg BND, VT) the `weight` column sums to well under 100. Use `market_value` for exact proportions.
 
 Also there are other ETF providers which I haven't implemented. Any pull requests to implement others are welcome!
+
+### Historical Holdings from SEC N-PORT Filings
+
+For providers that only publish recent holdings, `etf_scraper.edgar` retrieves historical holdings from the public N-PORT filings US registered funds make to the SEC. It works for any US registered ETF or mutual fund, not only the providers above.
+
+The SEC requires a contact name and email in the User-Agent of automated requests, so set `SEC_USER_AGENT` first:
+
+```python
+import os
+os.environ["SEC_USER_AGENT"] = "Your Name your.email@example.com"
+
+from etf_scraper import list_nport_filings, query_nport_holdings
+
+list_nport_filings("VOO")  # report_date, filing_date, accession_number, folder_url
+query_nport_holdings("VOO", "2026-06-30")  # holdings for one reporting date
+query_nport_holdings("QQQ")  # latest public filing
+```
+
+Caveats:
+
+- Filings become public about 60 days after the reporting date, and historically only for one month per quarter.
+- Holdings are reported per fund, so all share classes (eg VOO and VFIAX) return the same holdings.
+- Holdings are identified by name, CUSIP and ISIN. Tickers are usually missing.
+- Funds not registered under the 1940 Act don't file N-PORT. For example, QQQ only has filings from 2026, after converting from a unit investment trust.
 
 ### Available ETFs
 
