@@ -15,6 +15,7 @@ from etf_scraper.scrapers import (
     VanguardListings,
     SSGAListings,
     ISharesEUListings,
+    SSGAEUListings,
 )
 
 SCRAPERS = {
@@ -25,6 +26,7 @@ SCRAPERS = {
         VanguardListings,
         SSGAListings,
         ISharesEUListings,
+        SSGAEUListings,
     ]
 }
 

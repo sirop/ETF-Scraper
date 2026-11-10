@@ -101,6 +101,15 @@ def parse_date(value, formats: Sequence[str] = ("%d/%b/%Y", "%b %d, %Y", "%d.%b.
     return None
 
 
+# latest date pandas 2.x can hold (nanosecond resolution). Later dates do occur, eg
+# 1000-year hybrid bonds (Orsted matures in 3024); they become missing on every
+# pandas version so results don't depend on the version installed
+_MAX_DATE = date(2262, 4, 11)
+
+
 def parse_dates(values: Iterable, **kwargs) -> pd.Series:
-    """Vectorised parse_date returning a datetime64 series (NaT if unparseable)."""
-    return pd.to_datetime(pd.Series([parse_date(v, **kwargs) for v in values], dtype="object"))
+    """Vectorised parse_date returning a datetime64 series (NaT if unparseable or
+    beyond the pandas 2.x date range)."""
+    parsed = [parse_date(v, **kwargs) for v in values]
+    parsed = [d if d is None or d <= _MAX_DATE else None for d in parsed]
+    return pd.to_datetime(pd.Series(parsed, dtype="object"))
