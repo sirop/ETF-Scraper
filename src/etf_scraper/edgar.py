@@ -34,6 +34,7 @@ import pandas as pd
 import requests
 
 from etf_scraper.base import InvalidParameterError
+from etf_scraper.holdings import SOURCE_SEC_NPORT, normalize_holdings
 
 logger = logging.getLogger(__name__)
 
@@ -281,6 +282,7 @@ def query_nport_holdings(
             f"N-PORT filing is for series {ret_series}, expected {fund['series_id']}"
         )
 
-    holdings_df["fund_ticker"] = ticker.upper()
     holdings_df["accession_number"] = filing["accession_number"]
-    return holdings_df
+    return normalize_holdings(
+        holdings_df, fund_ticker=ticker.upper(), source=SOURCE_SEC_NPORT
+    )

@@ -13,6 +13,13 @@ class InvalidParameterError(Exception):
 
 
 class Provider(Enum):
+    """Fund providers, one per scraper.
+
+    Naming convention: the plain name is the provider's US site (eg IShares). Other
+    regional sites with their own fund range and format get a suffix, eg IShares_EU
+    for the European (UCITS) site.
+    """
+
     IShares = "IShares"
     SSGA = "SSGA"
     Vanguard = "Vanguard"
@@ -38,6 +45,7 @@ class SecurityListing(NamedTuple):
     net_assets: float = np.nan
     benchmark: str = ""
     exchange: str = ""
+    domicile: str = ""  # ISO country code of the fund's legal domicile, eg US, IE, LU
 
 
 class FundHolding:
@@ -86,3 +94,22 @@ class ProviderListings:
         Should return with all columns in FundHolding
         """
         raise NotImplementedError
+
+    @classmethod
+    def query_holdings(
+        cls, sec_listing: SecurityListing, holdings_date: Union[date, None] = None
+    ) -> pd.DataFrame:
+        """Retrieve holdings for the given security in the common holdings format
+        (see etf_scraper.holdings.normalize_holdings).
+        """
+        from etf_scraper.holdings import normalize_holdings
+
+        holdings_df = cls._retrieve_holdings(sec_listing, holdings_date)
+
+        fund_isin = sec_listing.isin if isinstance(sec_listing.isin, str) else None
+        return normalize_holdings(
+            holdings_df,
+            fund_ticker=sec_listing.ticker,
+            fund_isin=fund_isin or None,
+            provider=cls.provider,
+        )

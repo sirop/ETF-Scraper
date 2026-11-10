@@ -6,7 +6,6 @@ from urllib.parse import urljoin
 from io import StringIO
 from datetime import date, datetime
 
-import requests
 import pandas as pd
 import numpy as np
 
@@ -24,6 +23,7 @@ from etf_scraper.base import (
     InvalidParameterError,
 )
 
+from etf_scraper.http import ProviderSession
 from etf_scraper.scrapers._common import _check_exp_provider
 
 logger = logging.getLogger(__name__)
@@ -31,6 +31,7 @@ logger = logging.getLogger(__name__)
 
 class ISharesListings(ProviderListings):
     provider = Provider.IShares.value
+    session = ProviderSession(Provider.IShares.value)
     host = "https://www.ishares.com"
     listing_endpoint = (
         "/us/product-screener/product-screener-v3.1.jsn?dcrPath=/templatedata/config/product-screener-v3/"
@@ -121,7 +122,7 @@ class ISharesListings(ProviderListings):
     @classmethod
     def retrieve_listings(cls):
         listing_url = urljoin(cls.host, cls.listing_endpoint)
-        resp = requests.get(listing_url)
+        resp = cls.session.get(listing_url, expect=("json",))
         resp.raise_for_status()
 
         resp_df = pd.DataFrame(resp.json())
@@ -273,7 +274,7 @@ class ISharesListings(ProviderListings):
         logger.debug(
             f"Querying {cls.provider} for {ticker} holdings as of {holdings_date}"
         )
-        resp = requests.get(endpoint, params=req_params)
+        resp = cls.session.get(endpoint, params=req_params, expect=())
         resp.raise_for_status()
 
         holdings_df, as_of_date = cls._parse_holdings_resp(

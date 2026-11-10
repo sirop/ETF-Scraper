@@ -5,7 +5,6 @@ from typing import Union
 from io import BytesIO
 from datetime import date, datetime
 
-import requests
 import pandas as pd
 import numpy as np
 
@@ -22,6 +21,7 @@ from etf_scraper.base import (
     InvalidParameterError,
 )
 
+from etf_scraper.http import ProviderSession
 from etf_scraper.scrapers._common import _check_exp_provider
 
 logger = logging.getLogger(__name__)
@@ -29,6 +29,7 @@ logger = logging.getLogger(__name__)
 
 class SSGAListings(ProviderListings):
     provider = Provider.SSGA.value
+    session = ProviderSession(Provider.SSGA.value)
     host = "https://www.ssga.com"
 
     # FIXME: values should be enum
@@ -86,7 +87,7 @@ class SSGAListings(ProviderListings):
         Note: doesn't cover mutual funds.
         """
 
-        ssga_doc_req = requests.get(cls.ssga_doc_url)
+        ssga_doc_req = cls.session.get(cls.ssga_doc_url, expect=())
         ssga_doc_req.raise_for_status()
 
         ssga_doc_df = pd.read_excel(BytesIO(ssga_doc_req.content), skiprows=1)
@@ -100,7 +101,7 @@ class SSGAListings(ProviderListings):
 
     @classmethod
     def _query_ssga_webpage(cls) -> pd.DataFrame:
-        resp = requests.get(cls.ssga_web_url)
+        resp = cls.session.get(cls.ssga_web_url, expect=("json",))
         resp.raise_for_status()
 
         ssga_web_data = resp.json()
@@ -196,7 +197,7 @@ class SSGAListings(ProviderListings):
     @classmethod
     def retrieve_holdings(cls, ticker: str) -> pd.DataFrame:
         holdings_url = cls.etf_holdings_url.format(ticker.lower())
-        resp = requests.get(holdings_url)
+        resp = cls.session.get(holdings_url, expect=())
         resp.raise_for_status()
 
         holdings_df, resp_holdings_date, resp_ticker = cls._parse_holdings_resp(

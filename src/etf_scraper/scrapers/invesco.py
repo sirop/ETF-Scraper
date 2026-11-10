@@ -4,7 +4,6 @@ import logging
 from typing import Union
 from datetime import date
 
-import requests
 import pandas as pd
 import numpy as np
 
@@ -21,6 +20,7 @@ from etf_scraper.base import (
     InvalidParameterError,
 )
 
+from etf_scraper.http import ProviderSession
 from etf_scraper.scrapers._common import _check_exp_provider
 
 logger = logging.getLogger(__name__)
@@ -39,11 +39,11 @@ class InvescoListings(ProviderListings):
     holdings_endpoint_fmt = (
         api_host + "/cache/v1/accounts/en_US/shareclasses/{cusip}/holdings/fund"
     )
-    # Invesco's firewall rejects clients imitating a browser, so identify honestly
-    req_headers = {
-        "Accept": "application/json",
-        "User-Agent": "etf-scraper (+https://github.com/nikulpatel3141/ETF-Scraper)",
-    }
+    # Invesco's firewall rejects clients imitating a browser; ProviderSession
+    # identifies the tool honestly
+    session = ProviderSession(
+        Provider.Invesco.value, headers={"Accept": "application/json"}
+    )
 
     search_fields = [
         "ticker",
@@ -103,7 +103,7 @@ class InvescoListings(ProviderListings):
             "rows": 1000,
             "start": 0,
         }
-        resp = requests.get(cls.search_endpoint, params=params, headers=cls.req_headers)
+        resp = cls.session.get(cls.search_endpoint, params=params, expect=("json",))
         resp.raise_for_status()
         docs = resp.json()["response"]["docs"]
 
@@ -200,7 +200,7 @@ class InvescoListings(ProviderListings):
 
         url = cls.holdings_endpoint_fmt.format(cusip=cusip)
         params = {"idType": "cusip", "productType": "ETF"}
-        resp = requests.get(url, params=params, headers=cls.req_headers)
+        resp = cls.session.get(url, params=params, expect=("json",))
         resp.raise_for_status()
 
         holdings_df, _, ret_cusip = cls._parse_holdings_resp(resp.json())

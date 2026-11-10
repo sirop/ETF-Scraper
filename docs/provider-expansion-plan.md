@@ -173,7 +173,7 @@ Possible later step: make `query_holdings()` fall back automatically, first to t
 | Milestone | Content | Done when |
 |---|---|---|
 | M0 ✅ | Dependency fixes (4.5), split `scrapers.py` into one module per provider | All tests pass on Windows and Linux. Done 2026-11-10: `tests.yml` passes on Linux and Windows with Python 3.10 (pandas 2.x) and 3.15 (pandas 3.x). |
-| M1 | ISIN-based listings, regional providers, `normalize_holdings()`, `http.py` (4.1–4.4) | Existing 4 providers use the new structure |
+| M1 ✅ | ISIN-based listings, regional providers, `normalize_holdings()`, `http.py` (4.1–4.4) | Existing 4 providers use the new structure. Done 2026-11-10: lookup by ticker or ISIN (+ provider/exchange), `domicile` column, US ISINs derived from CUSIPs (358 filled, 9 wrong Invesco ISINs corrected), `Provider` naming convention for regional sites (`IShares_EU`), `holdings.normalize_holdings()` used by all scrapers and N-PORT, `http.ProviderSession` used by all scrapers. `parsers.py` (4.4) moved to M2, to be built against real EU provider files. |
 | M2 | Wave 1, part 1: iShares EU, Xtrackers | Live checks green |
 | M3 | Wave 1, part 2: SPDR EU, Invesco EU, VanEck EU, WisdomTree EU, Global X Europe | Live checks green |
 | M4 | Phase 0 for all of Wave 2, with a supported / limited / not supported decision for each | Recon table filled in |

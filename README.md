@@ -40,7 +40,26 @@ holdings_date =  "2022-12-30" # or None to query the latest holdings
 etf_scraper = ETFScraper()
 
 holdings_df = etf_scraper.query_holdings(fund_ticker, holdings_date)
+
+# funds can also be looked up by ISIN
+holdings_df = etf_scraper.query_holdings("US9229083632")  # VOO
+
+# if a ticker is listed by more than one provider/exchange, pass provider and/or exchange
+holdings_df = etf_scraper.query_holdings("VOO", provider="Vanguard")
 ```
+
+#### Holdings Format
+
+`query_holdings` returns the same columns for every provider (see `etf_scraper.holdings`):
+
+| Columns | Description |
+|---|---|
+| `fund_ticker`, `fund_isin`, `provider`, `as_of_date`, `source` | fund level, the same on every row. `source` is `provider` (the provider's site) or `sec_nport` |
+| `name`, `ticker`, `isin`, `cusip`, `sedol` | holding identifiers, where the provider gives them |
+| `amount`, `market_value`, `weight` | shares/par, market value, and weight in percent (eg `7.5` for 7.5%) |
+| `currency`, `security_type`, `sector`, `location`, `exchange` | descriptive fields, as text from the provider |
+
+Provider specific columns (eg `coupon`, `maturity_date` for bond funds) follow after these. A warning is logged if the weights don't sum to roughly 100% or the data has more than one date.
 
 ### Command Line
 

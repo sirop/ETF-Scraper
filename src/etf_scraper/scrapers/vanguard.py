@@ -4,7 +4,6 @@ import logging
 from typing import Union
 from datetime import date, datetime
 
-import requests
 import pandas as pd
 import numpy as np
 
@@ -19,6 +18,7 @@ from etf_scraper.base import (
     InvalidParameterError,
 )
 
+from etf_scraper.http import ProviderSession
 from etf_scraper.scrapers._common import _check_exp_provider
 
 logger = logging.getLogger(__name__)
@@ -26,9 +26,7 @@ logger = logging.getLogger(__name__)
 
 class VanguardListings(ProviderListings):
     provider = Provider.Vanguard.value
-    req_user_header = {
-        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
-    }  # need to pass otherwise requests will be denied
+    session = ProviderSession(Provider.Vanguard.value)
     listing_endpoint = (
         "https://investor.vanguard.com/investment-products/list/funddetail"
     )
@@ -97,7 +95,7 @@ class VanguardListings(ProviderListings):
         #FIXME: duplicates via multiple share classes, eg VFIAX, VFFSX, VOO
         #FIXME: as of Nov 2026 the listing endpoint returns HTML instead of JSON.
         """
-        resp = requests.get(cls.listing_endpoint, headers=cls.req_user_header)
+        resp = cls.session.get(cls.listing_endpoint, expect=("json",))
         resp.raise_for_status()
         fund_data = resp.json()
         fund_list = [x["profile"] for x in fund_data["fund"]["entity"]]
@@ -199,7 +197,7 @@ class VanguardListings(ProviderListings):
 
         while True:
             params = {"start": start, "count": cls.holdings_page_size}
-            resp = requests.get(url, params=params)
+            resp = cls.session.get(url, params=params, expect=("json",))
             resp.raise_for_status()
             resp_data = resp.json()
 
