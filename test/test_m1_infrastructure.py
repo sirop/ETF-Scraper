@@ -220,7 +220,11 @@ def test_bundled_listings_isins_are_valid():
     isins = listings["isin"].dropna()
     assert isins.map(is_valid_isin).all()
     assert not isins.duplicated().any()
-    assert (listings["domicile"] == "US").all()
+    # domicile matches the ISIN country for every fund that has one
+    with_isin = listings.dropna(subset=["isin"])
+    assert (with_isin["domicile"] == with_isin["isin"].str[:2]).all()
+    us_providers = {"IShares", "SSGA", "Vanguard", "Invesco"}
+    assert (listings.loc[listings["provider"].isin(us_providers), "domicile"] == "US").all()
     # leading zeros preserved
     assert listings.loc[listings["ticker"] == "VOO", "product_id"].iloc[0] == "0968"
 
@@ -255,3 +259,34 @@ def test_find_listing_ambiguous_ticker():
 
     with pytest.raises(ValueError, match="No listings found for ISIN"):
         es._find_sec_listing("DE0005933931")
+
+
+def test_find_listing_prefers_us_fund_for_bare_ticker():
+    """Tickers used to mean US funds: keep that when a UCITS fund shares the ticker"""
+    listings = pd.DataFrame(
+        {
+            "ticker": ["GOVT", "GOVT", "XYZ", "XYZ"],
+            "isin": ["US4642876142", "IE00B1FZS798", "IE00B5BMR087", "IE00B4L5Y983"],
+            "provider": ["IShares", "IShares_EU", "IShares_EU", "IShares_EU"],
+            "domicile": ["US", "IE", "IE", "IE"],
+            "fund_name": ["US fund", "UCITS fund", "A", "B"],
+        }
+    )
+    es = ETFScraper(listings)
+
+    assert es._find_sec_listing("GOVT").provider == "IShares"
+    assert es._find_sec_listing("GOVT", provider="IShares_EU").isin == "IE00B1FZS798"
+    assert es._find_sec_listing("IE00B1FZS798").provider == "IShares_EU"
+
+    # no US fund among the matches: still ambiguous
+    with pytest.raises(ValueError, match="Multiple listings"):
+        es._find_sec_listing("XYZ")
+
+
+def test_bundled_listings_keep_us_tickers_working():
+    """Bare US tickers that iShares EU funds also use still resolve to the US fund"""
+    es = ETFScraper()
+    for ticker in ["GOVT", "FLOT", "SPMV", "CNYA"]:
+        assert es._find_sec_listing(ticker).domicile == "US"
+    cspx = es._find_sec_listing("CSPX")
+    assert (cspx.provider, cspx.isin) == ("IShares_EU", "IE00B5BMR087")

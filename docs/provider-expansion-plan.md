@@ -106,6 +106,14 @@ Work through this checklist for each provider and record the results in a table 
 
 UCITS ETFs come first (decision 3). The US ranges of the new issuers move to the end, and many of them are already covered by SEC N-PORT.
 
+### 5.1a Reconnaissance results
+
+| Provider | Holdings source | Plain request + honest User-Agent | robots.txt / terms | Fund identifier | History | Fund list source | Decision |
+|---|---|---|---|---|---|---|---|
+| iShares EU (checked 2026-11-10) | `<product page>/latest-holdings.csv`, published on each page as a schema.org `DataDownload` ("Latest fund holdings CSV data") | ✅ works | ✅ not disallowed | product page URL (ID + slug). Use the exact URL: the cache is per URL, other slugs can return an older file | latest only | UK product sitemap (915 UCITS ETF pages incl. share classes) + start of each page (schema.org data for ticker/name/asset class, page header for ISIN) | **Supported** (`ISharesEUListings`) |
+| iShares US (checked 2026-11-10) | the old `.ajax?fileType=csv` URL returns HTML, but `<product page>/latest-holdings.csv` works (newer CSV layout) | ✅ works | ✅ not disallowed | product page URL | latest only via this link | US screener JSON still works | Fixable in Wave 3; the parser needs the new layout |
+| Xtrackers (checked 2026-11-10) | product pages are a JavaScript shell; data comes from `etf.deutsche-am.com/api/` | not tried | ❌ `robots.txt` disallows `/api/`, `/etfdata/` and `/export/`; site has an investor entry gate | ISIN in page URL | — | — | **Not supported for now** (access rules 3 and 5). Public example code (eg riccardotornesello/portfolio-scraper) uses exactly the disallowed `/api/fundfinder/...` and `/etfdata/export/.../constituent/{isin}/` paths plus a hard-coded investor-profile cookie. Deferred (2026-11-10): revisit later; options are asking DWS for permission or a data feed, or an opt-in scraper after checking DWS's terms of use. |
+
 ### 5.2 Wave 1: UCITS issuers that are usually accessible
 
 | # | Provider | Notes to verify |
@@ -174,7 +182,7 @@ Possible later step: make `query_holdings()` fall back automatically, first to t
 |---|---|---|
 | M0 ✅ | Dependency fixes (4.5), split `scrapers.py` into one module per provider | All tests pass on Windows and Linux. Done 2026-11-10: `tests.yml` passes on Linux and Windows with Python 3.10 (pandas 2.x) and 3.15 (pandas 3.x). |
 | M1 ✅ | ISIN-based listings, regional providers, `normalize_holdings()`, `http.py` (4.1–4.4) | Existing 4 providers use the new structure. Done 2026-11-10: lookup by ticker or ISIN (+ provider/exchange), `domicile` column, US ISINs derived from CUSIPs (358 filled, 9 wrong Invesco ISINs corrected), `Provider` naming convention for regional sites (`IShares_EU`), `holdings.normalize_holdings()` used by all scrapers and N-PORT, `http.ProviderSession` used by all scrapers. `parsers.py` (4.4) moved to M2, to be built against real EU provider files. |
-| M2 | Wave 1, part 1: iShares EU, Xtrackers | Live checks green |
+| M2 🟡 | Wave 1, part 1: iShares EU, Xtrackers | Live checks green. 2026-11-10: iShares EU done (915 UCITS ETFs in `listings.csv`, `parsers.py` added); Xtrackers not supported for now (robots.txt, see 5.1a). Open: live check workflow for iShares EU. |
 | M3 | Wave 1, part 2: SPDR EU, Invesco EU, VanEck EU, WisdomTree EU, Global X Europe | Live checks green |
 | M4 | Phase 0 for all of Wave 2, with a supported / limited / not supported decision for each | Recon table filled in |
 | M5 | Wave 2 scrapers for the supported UCITS providers | Live checks green |

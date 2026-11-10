@@ -151,6 +151,26 @@ class ProviderSession:
             check_content_type(resp, expect, self.provider)
         return resp
 
+    def get_prefix(self, url: str, max_bytes: int, **kwargs) -> str:
+        """GET only the first max_bytes of url and return them decoded as text.
+
+        Useful when the data needed sits near the top of a large page, to avoid
+        downloading the whole page. Same rate limit, retries and errors as get().
+        """
+        kwargs.setdefault("timeout", self.timeout)
+        resp = self.get(url, stream=True, **kwargs)
+        try:
+            chunks, size = [], 0
+            for chunk in resp.iter_content(chunk_size=16384):
+                chunks.append(chunk)
+                size += len(chunk)
+                if size >= max_bytes:
+                    break
+        finally:
+            resp.close()
+        encoding = resp.encoding or "utf-8"
+        return b"".join(chunks)[:max_bytes].decode(encoding, errors="replace")
+
 
 def check_content_type(
     resp: requests.Response, expect: Iterable[str], provider: str = ""

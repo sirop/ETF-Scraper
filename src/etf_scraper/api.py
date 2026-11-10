@@ -14,6 +14,7 @@ from etf_scraper.scrapers import (
     InvescoListings,
     VanguardListings,
     SSGAListings,
+    ISharesEUListings,
 )
 
 SCRAPERS = {
@@ -23,6 +24,7 @@ SCRAPERS = {
         InvescoListings,
         VanguardListings,
         SSGAListings,
+        ISharesEUListings,
     ]
 }
 
@@ -108,13 +110,33 @@ class ETFScraper:
         if exchange is not None and "exchange" in df:
             matches = matches[matches["exchange"].str.upper() == exchange.upper()]
 
+        cols = [c for c in ("ticker", "isin", "provider", "exchange", "fund_name") if c in matches]
+
+        # Backwards compatibility: tickers used to mean US funds. If a bare ticker
+        # matches several funds and exactly one is a US fund, use it. UCITS funds
+        # sharing the ticker are reached by ISIN or provider.
+        if (
+            len(matches) > 1
+            and id_type == "ticker"
+            and provider is None
+            and exchange is None
+            and "domicile" in matches
+        ):
+            us_matches = matches[matches["domicile"] == "US"]
+            if len(us_matches) == 1:
+                others = matches.drop(us_matches.index)
+                logger.info(
+                    f"Ticker {identifier} matches several funds, using the US fund. "
+                    f"Pass the ISIN or provider for the others:\n{others[cols].to_string()}"
+                )
+                matches = us_matches
+
         if len(matches) == 0:
             raise ValueError(f"No listings found for {id_type} {identifier}")
         elif len(matches) > 1:
-            cols = [c for c in ("ticker", "isin", "provider", "exchange", "fund_name") if c in matches]
             raise ValueError(
-                f"Multiple listings found for {id_type} {identifier}, pass provider "
-                f"and/or exchange to choose one:\n{matches[cols].to_string()}"
+                f"Multiple listings found for {id_type} {identifier}, use the ISIN or "
+                f"pass provider and/or exchange to choose one:\n{matches[cols].to_string()}"
             )
 
         sec_dict = matches.iloc[0].to_dict()
