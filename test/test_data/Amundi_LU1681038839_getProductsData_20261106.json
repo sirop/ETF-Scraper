@@ -1,0 +1,1017 @@
+{
+ "products": [
+  {
+   "productId": "LU1681038839",
+   "characteristics": {
+    "ISIN": "LU1681038839",
+    "SHARE_MARKETING_NAME": "Amundi Russell 2000 UCITS ETF USD Acc",
+    "FUND_REPLICATION_METHODOLOGY": "Indirect(Swap Based)"
+   },
+   "productType": "PRODUCT",
+   "currencies": {
+    "CURRENCY": "USD",
+    "BASE_CURRENCY": "USD",
+    "INDEX_CURRENCY": "USD"
+   },
+   "metrics": [],
+   "historics": [],
+   "passportingCountries": null,
+   "composition": {
+    "totalNumberOfInstruments": 66,
+    "compositionData": [
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 56466.00000000001,
+       "bbg": "ASML NA",
+       "name": "ASML HOLDING NV",
+       "weight": 0.08545985512583756,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Information Technology",
+       "isin": "NL0010273215",
+       "countryOfRisk": "Netherlands"
+      },
+      "weight": 0.08545985512583756
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 146898.0,
+       "bbg": "TT UN",
+       "name": "TRANE TECHNOLOGIES PLC",
+       "weight": 0.062432246097378366,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Industrials",
+       "isin": "IE00BK9ZQ967",
+       "countryOfRisk": "United States"
+      },
+      "weight": 0.062432246097378366
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 230000.0,
+       "bbg": "TEL UN",
+       "name": "TE CONNECTIVITY PLC",
+       "weight": 0.05036693723878939,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Information Technology",
+       "isin": "IE000IVNQZ81",
+       "countryOfRisk": "Switzerland"
+      },
+      "weight": 0.05036693723878939
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 271104.0,
+       "bbg": "MRK GY",
+       "name": "MERCK KGAA",
+       "weight": 0.04754866411004963,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Health Care",
+       "isin": "DE0006599905",
+       "countryOfRisk": "Germany"
+      },
+      "weight": 0.04754866411004963
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 673697.0,
+       "bbg": "DHL GY",
+       "name": "DHL GROUP (XETRA)",
+       "weight": 0.04608798893176258,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Industrials",
+       "isin": "DE0005552004",
+       "countryOfRisk": "Germany"
+      },
+      "weight": 0.04608798893176258
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 321245.0,
+       "bbg": "ENR GY",
+       "name": "SIEMENS ENERGY AG",
+       "weight": 0.044733377971233085,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Industrials",
+       "isin": "DE000ENER6Y0",
+       "countryOfRisk": "Germany"
+      },
+      "weight": 0.044733377971233085
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 141311.0,
+       "bbg": "SIE GY",
+       "name": "SIEMENS AG-REG",
+       "weight": 0.04392878235831378,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Industrials",
+       "isin": "DE0007236101",
+       "countryOfRisk": "Germany"
+      },
+      "weight": 0.04392878235831378
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 1372318.0,
+       "bbg": "DTE GY",
+       "name": "DEUTSCHE TELEKOM NAMEN (XETRA)",
+       "weight": 0.0419244711348078,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Communication Services",
+       "isin": "DE0005557508",
+       "countryOfRisk": "Germany"
+      },
+      "weight": 0.0419244711348078
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 688038.0,
+       "bbg": "IFX GY",
+       "name": "INFINEON TECHNOLOGIES AG",
+       "weight": 0.03711901169545309,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Information Technology",
+       "isin": "DE0006231004",
+       "countryOfRisk": "Germany"
+      },
+      "weight": 0.03711901169545309
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 235893.0,
+       "bbg": "JCI UN",
+       "name": "JOHNSON CONTROLS INTERNATIONAL",
+       "weight": 0.033695484286022065,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Industrials",
+       "isin": "IE00BY7QL619",
+       "countryOfRisk": "United States"
+      },
+      "weight": 0.033695484286022065
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 974182.9999999999,
+       "bbg": "INGA NA",
+       "name": "ING GROEP NV",
+       "weight": 0.03298909505021118,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Financials",
+       "isin": "NL0011821202",
+       "countryOfRisk": "Netherlands"
+      },
+      "weight": 0.03298909505021118
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 295571.0,
+       "bbg": "MDT UN",
+       "name": "MEDTRONIC PLC",
+       "weight": 0.03182995174765171,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Health Care",
+       "isin": "IE00BTN1Y115",
+       "countryOfRisk": "United States"
+      },
+      "weight": 0.03182995174765171
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 55974.99999999999,
+       "bbg": "ALV GY",
+       "name": "ALLIANZ SE-REG",
+       "weight": 0.02977229745496109,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Financials",
+       "isin": "DE0008404005",
+       "countryOfRisk": "Germany"
+      },
+      "weight": 0.02977229745496109
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 2471858.0,
+       "bbg": "SAMPO FH",
+       "name": "SAMPO OYJ-A SHS",
+       "weight": 0.028504130205185243,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Financials",
+       "isin": "FI4000552500",
+       "countryOfRisk": "Finland"
+      },
+      "weight": 0.028504130205185243
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 198247.0,
+       "bbg": "EBS AV",
+       "name": "ERSTE GROUP BANK",
+       "weight": 0.026063150475453704,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Financials",
+       "isin": "AT0000652011",
+       "countryOfRisk": "Austria"
+      },
+      "weight": 0.026063150475453704
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 102693.0,
+       "bbg": "HEI GY",
+       "name": "HEIDELBERGCEMENT AG",
+       "weight": 0.02104437506070883,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Materials",
+       "isin": "DE0006047004",
+       "countryOfRisk": "Germany"
+      },
+      "weight": 0.02104437506070883
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 11018.0,
+       "bbg": "MTD UN",
+       "name": "METTLER-TOLEDO INTERNATIONAL",
+       "weight": 0.02007243800976334,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Health Care",
+       "isin": "US5926881054",
+       "countryOfRisk": "United States"
+      },
+      "weight": 0.02007243800976334
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 420620.0,
+       "bbg": "NOVOB DC",
+       "name": "NOVO NORDISK A/S-B",
+       "weight": 0.017876957804032655,
+       "currency": "DKK",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Health Care",
+       "isin": "DK0062498333",
+       "countryOfRisk": "Denmark"
+      },
+      "weight": 0.017876957804032655
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 431919.0,
+       "bbg": "NKE UN",
+       "name": "NIKE INC -CL B",
+       "weight": 0.017632076804876343,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Consumer Discretionary",
+       "isin": "US6541061031",
+       "countryOfRisk": "United States"
+      },
+      "weight": 0.017632076804876343
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 214667.0,
+       "bbg": "G1A GY",
+       "name": "GEA GROUP AG EX MG TECHNOLOGIE",
+       "weight": 0.017553235214637065,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Industrials",
+       "isin": "DE0006602006",
+       "countryOfRisk": "Germany"
+      },
+      "weight": 0.017553235214637065
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 68062.0,
+       "bbg": "SAP GY",
+       "name": "SAP SE / XETRA",
+       "weight": 0.01691288555034268,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Information Technology",
+       "isin": "DE0007164600",
+       "countryOfRisk": "Germany"
+      },
+      "weight": 0.01691288555034268
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 836686.0,
+       "bbg": "NDA FH",
+       "name": "NORDEA BANK ABP",
+       "weight": 0.016144475185431467,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Financials",
+       "isin": "FI4000297767",
+       "countryOfRisk": "Finland"
+      },
+      "weight": 0.016144475185431467
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 64326.00000000001,
+       "bbg": "DHR UN",
+       "name": "DANAHER CORP",
+       "weight": 0.015667964060235264,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Health Care",
+       "isin": "US2358511028",
+       "countryOfRisk": "United States"
+      },
+      "weight": 0.015667964060235264
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 40786.0,
+       "bbg": "TSLA UW",
+       "name": "TESLA INC",
+       "weight": 0.01545565182882106,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Consumer Discretionary",
+       "isin": "US88160R1014",
+       "countryOfRisk": "United States"
+      },
+      "weight": 0.01545565182882106
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 55000.0,
+       "bbg": "ACN UN",
+       "name": "ACCENTURE PLC -A",
+       "weight": 0.015156425820505475,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Information Technology",
+       "isin": "IE00B4BNMY34",
+       "countryOfRisk": "United States"
+      },
+      "weight": 0.015156425820505475
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 259071.99999999997,
+       "bbg": "DANSKE DC",
+       "name": "DANSKE BANK A/S",
+       "weight": 0.014596792563664732,
+       "currency": "DKK",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Financials",
+       "isin": "DK0010274414",
+       "countryOfRisk": "Denmark"
+      },
+      "weight": 0.014596792563664732
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 70920.0,
+       "bbg": "ADS GY",
+       "name": "ADIDAS AG",
+       "weight": 0.014596004887167063,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Consumer Discretionary",
+       "isin": "DE000A1EWWW0",
+       "countryOfRisk": "Germany"
+      },
+      "weight": 0.014596004887167063
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 17354.0,
+       "bbg": "ASM NA",
+       "name": "ASM INTERNATIONAL NV",
+       "weight": 0.013320667923023161,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Information Technology",
+       "isin": "NL0000334118",
+       "countryOfRisk": "Netherlands"
+      },
+      "weight": 0.013320667923023161
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 196836.0,
+       "bbg": "BMY UN",
+       "name": "BRISTOL-MYERS SQUIBB CO",
+       "weight": 0.012939043152219552,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Health Care",
+       "isin": "US1101221083",
+       "countryOfRisk": "United States"
+      },
+      "weight": 0.012939043152219552
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 65454.0,
+       "bbg": "NVDA UW",
+       "name": "NVIDIA CORP",
+       "weight": 0.012923117687970487,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Information Technology",
+       "isin": "US67066G1040",
+       "countryOfRisk": "United States"
+      },
+      "weight": 0.012923117687970487
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 32224.0,
+       "bbg": "HD UN",
+       "name": "HOME DEPOT INC",
+       "weight": 0.011708321522458586,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Consumer Discretionary",
+       "isin": "US4370761029",
+       "countryOfRisk": "United States"
+      },
+      "weight": 0.011708321522458586
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 88413.0,
+       "bbg": "KBX GY",
+       "name": "KNORR-BREME AG",
+       "weight": 0.009846083385268965,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Industrials",
+       "isin": "DE000KBX1006",
+       "countryOfRisk": "Germany"
+      },
+      "weight": 0.009846083385268965
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 11507.0,
+       "bbg": "MCO UN",
+       "name": "MOODY S CORP",
+       "weight": 0.006155391539703961,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Financials",
+       "isin": "US6153691059",
+       "countryOfRisk": "United States"
+      },
+      "weight": 0.006155391539703961
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 108738.0,
+       "bbg": "NDX1 GY",
+       "name": "NORDEX SE",
+       "weight": 0.005510527474120851,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Industrials",
+       "isin": "DE000A0D6554",
+       "countryOfRisk": "Germany"
+      },
+      "weight": 0.005510527474120851
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 33496.0,
+       "bbg": "NDA GY",
+       "name": "AURUBIS AG",
+       "weight": 0.005430515605823027,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Materials",
+       "isin": "DE0006766504",
+       "countryOfRisk": "Germany"
+      },
+      "weight": 0.005430515605823027
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 16645.0,
+       "bbg": "CI UN",
+       "name": "THE CIGNA GROUP",
+       "weight": 0.0051695345198062735,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Health Care",
+       "isin": "US1255231003",
+       "countryOfRisk": "United States"
+      },
+      "weight": 0.0051695345198062735
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 62093.0,
+       "bbg": "CON GY",
+       "name": "CONTINENTAL AG",
+       "weight": 0.005149800761608453,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Consumer Discretionary",
+       "isin": "DE0005439004",
+       "countryOfRisk": "Germany"
+      },
+      "weight": 0.005149800761608453
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 9500.0,
+       "bbg": "AMD UW",
+       "name": "ADVANCED MICRO DEVICES",
+       "weight": 0.004512684964228312,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Information Technology",
+       "isin": "US0079031078",
+       "countryOfRisk": "United States"
+      },
+      "weight": 0.004512684964228312
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 16096.0,
+       "bbg": "DIE BB",
+       "name": "D IETEREN GROUP",
+       "weight": 0.0033895718009360316,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Consumer Discretionary",
+       "isin": "BE0974259880",
+       "countryOfRisk": "Belgium"
+      },
+      "weight": 0.0033895718009360316
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 611468.0,
+       "bbg": "KPN NA",
+       "name": "KONINKLIJKE KPN NV",
+       "weight": 0.0031744452331366477,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Communication Services",
+       "isin": "NL0000009082",
+       "countryOfRisk": "Netherlands"
+      },
+      "weight": 0.0031744452331366477
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 76876.0,
+       "bbg": "SAND SS",
+       "name": "SANDVIK AB",
+       "weight": 0.002941583386875625,
+       "currency": "SEK",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Industrials",
+       "isin": "SE0000667891",
+       "countryOfRisk": "Sweden"
+      },
+      "weight": 0.002941583386875625
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 11284.0,
+       "bbg": "AIR FP",
+       "name": "AIRBUS SE PARIS",
+       "weight": 0.0026130636042459173,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Industrials",
+       "isin": "NL0000235190",
+       "countryOfRisk": "France"
+      },
+      "weight": 0.0026130636042459173
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 26155.0,
+       "bbg": "HEIA NA",
+       "name": "HEINEKEN NV",
+       "weight": 0.0025775227738071907,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Consumer Staples",
+       "isin": "NL0000009165",
+       "countryOfRisk": "Netherlands"
+      },
+      "weight": 0.0025775227738071907
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 160000.0,
+       "bbg": "ALE PW",
+       "name": "ALLEGRO.EU SA",
+       "weight": 0.0025676229215730534,
+       "currency": "PLN",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Consumer Discretionary",
+       "isin": "LU2237380790",
+       "countryOfRisk": "Poland"
+      },
+      "weight": 0.0025676229215730534
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 13322.0,
+       "bbg": "BG AV",
+       "name": "BAWAG GROUP AG",
+       "weight": 0.002555656037552595,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Financials",
+       "isin": "AT0000BAWAG2",
+       "countryOfRisk": "Austria"
+      },
+      "weight": 0.002555656037552595
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 7625.0,
+       "bbg": "GOOGL UW",
+       "name": "ALPHABET INC CL A",
+       "weight": 0.0022970778577116086,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Communication Services",
+       "isin": "US02079K3059",
+       "countryOfRisk": "United States"
+      },
+      "weight": 0.0022970778577116086
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 31480.0,
+       "bbg": "GBF GY",
+       "name": "BILFINGER SE",
+       "weight": 0.0022790219858128766,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Industrials",
+       "isin": "DE0005909006",
+       "countryOfRisk": "Germany"
+      },
+      "weight": 0.0022790219858128766
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 17799.0,
+       "bbg": "DIS UN",
+       "name": "WALT DISNEY CO/THE",
+       "weight": 0.0021982590752141116,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Communication Services",
+       "isin": "US2546871060",
+       "countryOfRisk": "United States"
+      },
+      "weight": 0.0021982590752141116
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 48954.00000000001,
+       "bbg": "DBK GY",
+       "name": "DEUTSCHE BANK AG NAMEN",
+       "weight": 0.0018216737408283325,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Financials",
+       "isin": "DE0005140008",
+       "countryOfRisk": "Germany"
+      },
+      "weight": 0.0018216737408283325
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 36556.0,
+       "bbg": "MBG GY",
+       "name": "MERCEDES-BENZ GROUP AG",
+       "weight": 0.0017911311023851137,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Consumer Discretionary",
+       "isin": "DE0007100000",
+       "countryOfRisk": "Germany"
+      },
+      "weight": 0.0017911311023851137
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 41477.0,
+       "bbg": "KGX GY",
+       "name": "KION GROUP AG",
+       "weight": 0.0016784176423264665,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Industrials",
+       "isin": "DE000KGX8881",
+       "countryOfRisk": "Germany"
+      },
+      "weight": 0.0016784176423264665
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 72593.0,
+       "bbg": "EOAN GY",
+       "name": "E.ON SE",
+       "weight": 0.0016335496180593686,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Utilities",
+       "isin": "DE000ENAG999",
+       "countryOfRisk": "Germany"
+      },
+      "weight": 0.0016335496180593686
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 3319.0,
+       "bbg": "STX UW",
+       "name": "SEAGATE TECHNOLOGY HOLDINGS",
+       "weight": 0.0016185463404194236,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Information Technology",
+       "isin": "IE00BKVD2N49",
+       "countryOfRisk": "United States"
+      },
+      "weight": 0.0016185463404194236
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 48671.0,
+       "bbg": "ZAL GY",
+       "name": "ZALANDO SE",
+       "weight": 0.0015907755794806583,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Consumer Discretionary",
+       "isin": "DE000ZAL1111",
+       "countryOfRisk": "Germany"
+      },
+      "weight": 0.0015907755794806583
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 12198.0,
+       "bbg": "NEM UN",
+       "name": "NEWMONT CORP USD",
+       "weight": 0.0015601890672537163,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Materials",
+       "isin": "US6516391066",
+       "countryOfRisk": "United States"
+      },
+      "weight": 0.0015601890672537163
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 5159.000000000001,
+       "bbg": "IQV UN",
+       "name": "IQVIA HOLDINGS INC",
+       "weight": 0.0014835059586977097,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Health Care",
+       "isin": "US46266C1053",
+       "countryOfRisk": "United States"
+      },
+      "weight": 0.0014835059586977097
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 7063.0,
+       "bbg": "COHR UN",
+       "name": "COHERENT CORP",
+       "weight": 0.0014406057461443635,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Information Technology",
+       "isin": "US19247G1076",
+       "countryOfRisk": "United States"
+      },
+      "weight": 0.0014406057461443635
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 17190.0,
+       "bbg": "IBKR UW",
+       "name": "INTERACTIVE BROKERS GRO-CL A",
+       "weight": 0.0013787516227609568,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Financials",
+       "isin": "US45841N1072",
+       "countryOfRisk": "United States"
+      },
+      "weight": 0.0013787516227609568
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 48417.0,
+       "bbg": "LATOB SS",
+       "name": "INVESTMENT AB LATOUR-B SHS",
+       "weight": 0.0012160788104500172,
+       "currency": "SEK",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Industrials",
+       "isin": "SE0010100958",
+       "countryOfRisk": "Sweden"
+      },
+      "weight": 0.0012160788104500172
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 2673.0,
+       "bbg": "RACE IM",
+       "name": "FERRARI NV MILAN",
+       "weight": 0.0011782617076536328,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Consumer Discretionary",
+       "isin": "NL0011585146",
+       "countryOfRisk": "Italy"
+      },
+      "weight": 0.0011782617076536328
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 2351.0,
+       "bbg": "ELV UN",
+       "name": "ELEVANCE HEALTH INC",
+       "weight": 0.0010585247988241042,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Health Care",
+       "isin": "US0367521038",
+       "countryOfRisk": "United States"
+      },
+      "weight": 0.0010585247988241042
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 33573.0,
+       "bbg": "SEBA SS",
+       "name": "SKANDINAVISKA ENSKILDA BANKEN A",
+       "weight": 0.0007720763785729006,
+       "currency": "SEK",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Financials",
+       "isin": "SE0000148884",
+       "countryOfRisk": "Sweden"
+      },
+      "weight": 0.0007720763785729006
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 2852.0,
+       "bbg": "CIEN UN",
+       "name": "CIENA CORP",
+       "weight": 0.0007343086323093473,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Information Technology",
+       "isin": "US1717793095",
+       "countryOfRisk": "United States"
+      },
+      "weight": 0.0007343086323093473
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 1745.9999999999998,
+       "bbg": "IT UN",
+       "name": "GARTNER INC",
+       "weight": 0.0003511177171707302,
+       "currency": "USD",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Information Technology",
+       "isin": "US3666511072",
+       "countryOfRisk": "United States"
+      },
+      "weight": 0.0003511177171707302
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 41.0,
+       "bbg": "PUM GY",
+       "name": "PUMA SE",
+       "weight": 1.2965463600484433e-06,
+       "currency": "EUR",
+       "type": "EQUITY_ORDINARY",
+       "sector": "Consumer Discretionary",
+       "isin": "DE0006969603",
+       "countryOfRisk": "Germany"
+      },
+      "weight": 1.2965463600484433e-06
+     },
+     {
+      "compositionCharacteristics": {
+       "date": "2026-11-06",
+       "quantity": 1.0,
+       "bbg": null,
+       "name": null,
+       "weight": -0.0003111520252211854,
+       "currency": "EUR",
+       "type": "CASH",
+       "sector": null,
+       "isin": null,
+       "countryOfRisk": null
+      },
+      "weight": -0.0003111520252211854
+     }
+    ]
+   },
+   "breakDowns": []
+  }
+ ]
+}

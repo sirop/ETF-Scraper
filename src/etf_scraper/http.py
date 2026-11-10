@@ -123,6 +123,27 @@ class ProviderSession:
         - requests.HTTPError for 4xx responses and 5xx after retries
         - UnexpectedResponseError if the content type doesn't match `expect`
         """
+        return self.request("GET", url, expect=expect, **kwargs)
+
+    def post(
+        self,
+        url: str,
+        expect: Optional[Iterable[str]] = None,
+        **kwargs,
+    ) -> requests.Response:
+        """POST to url (eg json=...), with the same retries, rate limit and
+        content type check as get(). Only for data APIs a provider's own public
+        pages call with POST.
+        """
+        return self.request("POST", url, expect=expect, **kwargs)
+
+    def request(
+        self,
+        method: str,
+        url: str,
+        expect: Optional[Iterable[str]] = None,
+        **kwargs,
+    ) -> requests.Response:
         kwargs.setdefault("timeout", self.timeout)
         host = urlparse(url).netloc
 
@@ -132,9 +153,9 @@ class ProviderSession:
             wait=wait_exponential(multiplier=1, min=1, max=30),
             reraise=True,
         )
-        def _get():
+        def _request():
             _rate_limiter.wait(host, self.min_interval)
-            resp = self.session.get(url, **kwargs)
+            resp = self.session.request(method, url, **kwargs)
             if resp.status_code in RETRY_STATUS:
                 logger.warning(
                     f"{self.provider}: HTTP {resp.status_code} from {url}, retrying"
@@ -144,7 +165,7 @@ class ProviderSession:
                 )
             return resp
 
-        resp = _get()
+        resp = _request()
         resp.raise_for_status()
 
         if expect is not None:

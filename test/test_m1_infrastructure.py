@@ -170,9 +170,11 @@ class _FakeSession:
         self.responses = list(responses)
         self.headers = {}
         self.calls = 0
+        self.methods = []
 
-    def get(self, url, **kwargs):
+    def request(self, method, url, **kwargs):
         self.calls += 1
+        self.methods.append(method)
         return self.responses.pop(0)
 
 
@@ -190,6 +192,22 @@ def test_provider_session_retries_server_errors(monkeypatch):
     resp = session.get("https://x.test/data", expect=("json",))
     assert resp.json() == {"ok": True}
     assert fake.calls == 2
+
+
+def test_provider_session_post_uses_same_checks(monkeypatch):
+    monkeypatch.setattr("tenacity.nap.time.sleep", lambda s: None)
+    session = ProviderSession("Test", min_interval=0)
+    fake = _FakeSession(
+        [
+            _response(b"", "text/plain", status=500),
+            _response(b"<!DOCTYPE html><html></html>", "text/html"),
+        ]
+    )
+    session.session = fake
+
+    with pytest.raises(UnexpectedResponseError):
+        session.post("https://x.test/api", json={"a": 1}, expect=("json",))
+    assert fake.methods == ["POST", "POST"]
 
 
 def test_provider_session_does_not_retry_client_errors(monkeypatch):

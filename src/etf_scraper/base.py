@@ -28,6 +28,7 @@ class Provider(Enum):
     SSGA_EU = "SSGA_EU"
     Invesco_EU = "Invesco_EU"
     GlobalX_EU = "GlobalX_EU"
+    Amundi = "Amundi"  # UCITS only, so no _EU suffix
 
 
 class SecurityListing(NamedTuple):

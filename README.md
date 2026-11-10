@@ -154,6 +154,7 @@ We are therefore limited by what they publish, in particular:
 - Invesco: only latest holdings
 - Invesco EU (UCITS ETFs, provider `Invesco_EU`): only latest holdings, with name, ISIN, weight and currency (no share counts or market values). Synthetic (swap based) ETFs report their substitute basket; `InvescoEUListings.retrieve_holdings(ticker, isin, variation="index")` returns the tracked index instead. Commodity ETCs (eg physical gold) have no holdings.
 - Global X Europe (UCITS ETFs, provider `GlobalX_EU`): only latest holdings, from the holdings CSV each fund page offers (the substitute basket for synthetic funds; the `holdings_source` column says which). Crypto ETPs have no holdings.
+- Amundi (UCITS ETFs including the former Lyxor range, provider `Amundi`): only latest holdings, from the data API the public German retail product pages use. Each holding has its Bloomberg ticker, ISIN, quantity, weight, currency, sector and country of risk (no market values). Synthetic (swap based) ETFs report their substitute basket.
 - Vanguard: only the latest month end holdings. Vanguard rounds weights to 2 decimals, so for funds with thousands of small holdings (eg BND, VT) the `weight` column sums to well under 100. Use `market_value` for exact proportions.
 
 Also there are other ETF providers which I haven't implemented. Any pull requests to implement others are welcome!
