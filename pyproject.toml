@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=63.0"]
+requires = ["setuptools>=77.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,25 +7,26 @@ name = "etf_scraper"
 version = "0.1.2"
 description = "Scrape ETF and Mutual Fund holdings from major providers"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE.txt"]
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
 ]
 dependencies = [
     "requests",
     "tenacity",
     "pandas>=2.2",
-    "numpy<2.0",
-    # 5.x uses Python 3.10+ syntax but doesn't declare it, so pip installs it on 3.9
-    "pandas_market_calendars<5; python_version < '3.10'",
-    "pandas_market_calendars; python_version >= '3.10'",
+    "numpy",
+    "pandas_market_calendars",
     "openpyxl",
 ]
 
 [project.optional-dependencies]
 cloud = [
     "gcsfs",
+    # FIXME: fastparquet<=2023.01 doesn't work with numpy 2; revisit (pyarrow?)
+    # once the archive cloud is chosen
     "fastparquet<=2023.01",
     "google-cloud-bigquery",
 ]

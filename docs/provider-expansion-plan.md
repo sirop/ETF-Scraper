@@ -86,7 +86,7 @@ Add a `normalize_holdings()` helper that every scraper calls at the end. It sets
 ### 4.5 Dependency fixes (do now)
 
 - Pin `pandas_market_calendars` to a version compatible with pandas 2.3, or fix `utils._get_trd_dates`. One test currently fails because of this.
-- Raise `requires-python` to 3.10 or test on 3.9 in CI.
+- Raise `requires-python` to 3.10 and drop the `numpy<2.0` pin, so Python 3.13+ installs work. CI tests 3.10 and 3.15.
 - Open the test data files in tests with `encoding="utf-8"`, so the tests pass on Windows.
 
 ## 5. Provider Plan
@@ -172,7 +172,7 @@ Possible later step: make `query_holdings()` fall back automatically, first to t
 
 | Milestone | Content | Done when |
 |---|---|---|
-| M0 ✅ | Dependency fixes (4.5), split `scrapers.py` into one module per provider | All tests pass on Windows and Linux. Done 2026-11-10 locally on Windows / Python 3.9; the Linux run happens in the new `tests.yml` workflow once pushed. |
+| M0 ✅ | Dependency fixes (4.5), split `scrapers.py` into one module per provider | All tests pass on Windows and Linux. Done 2026-11-10: `tests.yml` passes on Linux and Windows with Python 3.10 (pandas 2.x) and 3.15 (pandas 3.x). |
 | M1 | ISIN-based listings, regional providers, `normalize_holdings()`, `http.py` (4.1–4.4) | Existing 4 providers use the new structure |
 | M2 | Wave 1, part 1: iShares EU, Xtrackers | Live checks green |
 | M3 | Wave 1, part 2: SPDR EU, Invesco EU, VanEck EU, WisdomTree EU, Global X Europe | Live checks green |
