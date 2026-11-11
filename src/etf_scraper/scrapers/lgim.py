@@ -17,6 +17,7 @@ end, not the fund's holdings, so they are not used. Only the latest holdings are
 available.
 """
 
+import csv
 import html
 import json
 import logging
@@ -64,7 +65,88 @@ class LGIMListings(ProviderListings):
 
     @classmethod
     def _parse_holdings_resp(cls, text: str) -> pd.DataFrame:
-        """Parse a Fundholdings.csv basket file."""
+        """Parse a Fundholdings.csv file: the simple basket file most funds have, or
+        a full portfolio composition file (eg synthetic commodity funds)."""
+        if "PORTFOLIO COMPOSITION FILE" in text[:200]:
+            return cls._parse_pcf(text)
+        return cls._parse_basket(text)
+
+    @staticmethod
+    def _num(value) -> float:
+        try:
+            return float(str(value).replace(",", "").strip())
+        except ValueError:
+            return np.nan
+
+    @classmethod
+    def _parse_pcf(cls, text: str) -> pd.DataFrame:
+        """Parse a portfolio composition file.
+
+        Quantities are per creation basket. Weights are each position's value
+        (quantity x price x contract size) relative to the basket NAV (NAV per share
+        x shares per basket); amount and market value are scaled to the fund with
+        the number of baskets outstanding.
+        """
+        rows = list(csv.reader(StringIO(text.lstrip("﻿"))))
+        meta = {}
+        for r in rows:
+            if len(r) >= 2 and r[0].strip() and r[0].strip() not in meta:
+                meta[r[0].strip()] = r[1].strip()
+        base_ccy = meta.get("Fund Base Currency") or meta.get("Share Class Currency")
+        basket_nav = cls._num(meta.get("Total NAV per share")) * cls._num(
+            meta.get("Shares per Basket")
+        )
+        baskets = cls._num(meta.get("Baskets Outstanding"))
+
+        records = []
+        for i, r in enumerate(rows):
+            section = r[0].strip() if r else ""
+            if section not in ("Holdings:", "Holdings: Synthetics") or i + 1 >= len(rows):
+                continue
+            header = [h.strip() for h in rows[i + 1]]
+            for line in rows[i + 2:]:
+                if not any(c.strip() for c in line):
+                    break
+                d = dict(zip(header, (c.strip() for c in line)))
+                price = cls._num(d.get("LOCAL PRICE") or d.get("PRICING LOCAL PRICE"))
+                size = cls._num(d.get("CONTRACT SIZE")) if d.get("CONTRACT SIZE") else 1.0
+                mult = cls._num(d.get("PRICE MULTIPLIER")) if d.get("PRICE MULTIPLIER") else 1.0
+                qty = cls._num(d.get("PRICING BASKET QTY"))
+                value = qty * price * size * mult
+                currency = d.get("LOCAL CURRENCY") or None
+                if currency and base_ccy and currency != base_ccy:
+                    # the FX convention isn't confirmed yet, so don't guess
+                    logger.warning(
+                        f"{cls.provider}: {d.get('NAME')} is in {currency}, not {base_ccy}; "
+                        "market value and weight left empty"
+                    )
+                    value = np.nan
+                records.append({
+                    "name": d.get("NAME") or None,
+                    "isin": d.get("ISIN") or None,
+                    "cusip": d.get("CUSIP") or None,
+                    "sedol": d.get("SEDOL") or None,
+                    "ticker": d.get("BLOOMBERG TICKER") or None,
+                    "security_type": d.get("ASSET CLASS") or None,
+                    "currency": currency,
+                    "amount": qty * baskets,
+                    "market_value": value * baskets,
+                    "weight": 100 * value / basket_nav,
+                    "price": price,
+                })
+        if not records:
+            raise InvalidParameterError(f"{cls.provider}: no holdings in the composition file")
+        df = pd.DataFrame(records)
+        df.loc[~df["isin"].map(lambda v: isinstance(v, str) and is_valid_isin(v)), "isin"] = np.nan
+        as_of = pd.to_datetime(meta.get("Trade Date"), format="%d/%m/%Y", errors="coerce")
+        df["as_of_date"] = as_of if not pd.isna(as_of) else None
+        df["fund_name"] = meta.get("Share Class Name")
+        df["basket_isin"] = meta.get("Share Class ISIN")
+        return df
+
+    @classmethod
+    def _parse_basket(cls, text: str) -> pd.DataFrame:
+        """Parse the simple basket file (description, ISIN, currency, weight)."""
         lines = text.lstrip("﻿").splitlines()
         meta = {}
         header_row = None

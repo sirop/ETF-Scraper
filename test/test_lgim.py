@@ -69,6 +69,25 @@ def test_lgim_holdings_parser():
     assert df["name"].iloc[-1] == "SHOPIFY INC NPV"  # notes and disclaimer not included
 
 
+def test_lgim_portfolio_composition_file():
+    """Synthetic funds (eg All Commodities) publish a full PCF with futures per basket"""
+    df = LGIMListings._parse_holdings_resp(
+        DATA_DIR.joinpath("LGIM_IE00BF0BCP69_Fundholdings_PCF_20261111.csv").read_text(encoding="utf-8")
+    )
+    assert len(df) == 50
+    first = df.iloc[0]
+    assert first["name"] == "CBT Chicago Board of Trade Corn Electronic Commodity Future"
+    assert (first["ticker"], first["security_type"], first["currency"]) == ("C H7", "Future", "USD")
+    # 0.863396 contracts x 4.615 x 5000 per basket of 50,000 shares (NAV 20.0469 per share)
+    assert np.isclose(first["weight"], 100 * 0.863396 * 4.615 * 5000 / (20.046853487882768 * 50000))
+    assert np.isclose(first["amount"], 0.863396 * 481.54574)  # scaled to the fund
+    assert np.isclose(df["weight"].sum(), 100.0, atol=0.01)
+    # fund level market value matches the reported net assets (482,673,845 USD)
+    assert np.isclose(df["market_value"].sum(), 482673844.87, rtol=1e-5)
+    assert df["as_of_date"].iloc[0] == pd.Timestamp("2026-11-11")
+    assert df["basket_isin"].iloc[0] == "IE00BF0BCP69"
+
+
 def test_lgim_rejects_other_files():
     with pytest.raises(InvalidParameterError, match="no holdings table"):
         LGIMListings._parse_holdings_resp("<html>not a basket file</html>")
