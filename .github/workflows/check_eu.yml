@@ -1,0 +1,53 @@
+name: EU providers (UCITS)
+
+# Daily live check: one well known fund per European provider, looked up by ISIN.
+# expected_rows is a lower bound (about 85-90% of the holdings count when added).
+# The schedule only runs on the default branch; pushes that touch the EU scrapers
+# run it on any branch.
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/check_eu.yml"
+      - ".github/workflows/check-scraper.yml"
+      - "src/etf_scraper/scrapers/*_eu.py"
+      - "src/etf_scraper/scrapers/amundi.py"
+      - "src/etf_scraper/scrapers/hsbc.py"
+      - "src/etf_scraper/http.py"
+      - "src/etf_scraper/parsers.py"
+  schedule:
+    - cron: "31 19 * * 1-5"
+
+jobs:
+  scrape:
+    name: ${{ matrix.provider }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - provider: IShares_EU   # iShares Core S&P 500 (CSPX)
+            isin: IE00B5BMR087
+            expected_rows: 450
+          - provider: SSGA_EU      # SPDR S&P 500 Quality Aristocrats (QUS5)
+            isin: IE000FJJZA01
+            expected_rows: 90
+          - provider: Invesco_EU   # Invesco EQQQ Nasdaq-100 Acc (EQAC)
+            isin: IE00BFZXGZ54
+            expected_rows: 90
+          - provider: GlobalX_EU   # Global X Nasdaq 100 Covered Call (QYLD)
+            isin: IE00BM8R0J59
+            expected_rows: 35
+          - provider: Amundi       # Amundi Russell 2000 (RS2U)
+            isin: LU1681038839
+            expected_rows: 50
+          - provider: Franklin_EU  # Franklin FTSE Emerging Markets (EMGM)
+            isin: IE0004I037N4
+            expected_rows: 1400
+          - provider: HSBC         # HSBC FTSE 100
+            isin: IE00B42TW061
+            expected_rows: 100
+    uses: ./.github/workflows/check-scraper.yml
+    with:
+      etf_ticker: ${{ matrix.isin }}
+      expected_rows: ${{ format('{0}', matrix.expected_rows) }}
