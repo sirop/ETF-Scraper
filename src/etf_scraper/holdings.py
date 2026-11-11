@@ -117,8 +117,11 @@ def check_holdings(df: pd.DataFrame) -> list:
         warnings.append("no holdings")
     else:
         dates = df["as_of_date"].dropna().unique()
-        if len(dates) != 1:
+        if len(dates) > 1:
             warnings.append(f"expected one as_of_date, found {len(dates)}")
+        elif len(dates) == 0:
+            # some providers don't publish a date with the holdings (eg Xtrackers)
+            logger.info(f"Holdings check for {label}: no as_of_date")
 
         if df["weight"].notna().any():
             total = df["weight"].sum()

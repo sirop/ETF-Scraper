@@ -1,0 +1,1216 @@
+{
+ "tables": [
+  {
+   "columns": [
+    {
+     "key": "header",
+     "value": "ISIN",
+     "alignment": "left",
+     "isVisibleOnHeader": true,
+     "wordBreak": false
+    },
+    {
+     "key": "column_0",
+     "value": "Name",
+     "alignment": "left",
+     "isVisibleOnHeader": true
+    },
+    {
+     "key": "column_1",
+     "value": "Gewichtung %",
+     "alignment": "right",
+     "isVisibleOnHeader": true
+    },
+    {
+     "key": "column_2",
+     "value": "Marktwert",
+     "alignment": "right",
+     "isVisibleOnHeader": true
+    },
+    {
+     "key": "column_3",
+     "value": "Land",
+     "alignment": "left",
+     "isVisibleOnHeader": true
+    },
+    {
+     "key": "column_4",
+     "value": "Industrie",
+     "alignment": "left",
+     "isVisibleOnHeader": true
+    },
+    {
+     "key": "column_5",
+     "value": "Anlageklasse",
+     "alignment": "left",
+     "isVisibleOnHeader": true
+    }
+   ],
+   "values": [
+    {
+     "header": {
+      "value": "US0378331005",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "APPLE",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "5,750%",
+      "sortValue": 5.75024052,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "1,78 Mrd. USD",
+      "sortValue": 1775472981.31,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Informationstechnologie",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "US67066G1040",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "NVIDIA",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "4,585%",
+      "sortValue": 4.58476608,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "1,42 Mrd. USD",
+      "sortValue": 1415615274.24,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Informationstechnologie",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "US5949181045",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "MICROSOFT",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "4,294%",
+      "sortValue": 4.2942701,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "1,33 Mrd. USD",
+      "sortValue": 1325920284.04,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Informationstechnologie",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "US0231351067",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "AMAZON COM INC",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "2,886%",
+      "sortValue": 2.88572892,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "891,01 Mio. USD",
+      "sortValue": 891012073.07,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Nicht-Basiskonsumgüter",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "US02079K3059",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "ALPHABET CLASS A",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "1,888%",
+      "sortValue": 1.88819375,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "583,01 Mio. USD",
+      "sortValue": 583008132.0,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Kommunikationsdienste",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "US11135F1012",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "BROADCOM INC",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "1,612%",
+      "sortValue": 1.61169134,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "497,63 Mio. USD",
+      "sortValue": 497633868.76,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Informationstechnologie",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "US30303M1027",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "META PLATFORMS CLASS A",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "1,572%",
+      "sortValue": 1.57207472,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "485,40 Mio. USD",
+      "sortValue": 485401643.4,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Kommunikationsdienste",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "US02079K1079",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "ALPHABET CLASS C",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "1,493%",
+      "sortValue": 1.49320908,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "461,05 Mio. USD",
+      "sortValue": 461050694.09,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Kommunikationsdienste",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "US5324571083",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "ELI LILLY",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "1,262%",
+      "sortValue": 1.26152006,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "389,51 Mio. USD",
+      "sortValue": 389513234.55,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Gesundheitswesen",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "US88160R1014",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "TESLA INC",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "1,207%",
+      "sortValue": 1.2072292,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "372,75 Mio. USD",
+      "sortValue": 372750117.05,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Nicht-Basiskonsumgüter",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "US46625H1005",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "JPMORGAN CHASE",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "1,015%",
+      "sortValue": 1.01493946,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "313,38 Mio. USD",
+      "sortValue": 313377777.6,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Finanzen",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "US0079031078",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "ADVANCED MICRO DEVICES",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "0,926%",
+      "sortValue": 0.92618174,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "285,97 Mio. USD",
+      "sortValue": 285972499.68,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Informationstechnologie",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "US5951121038",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "MICRON TECHNOLOGY",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "0,924%",
+      "sortValue": 0.92420853,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "285,36 Mio. USD",
+      "sortValue": 285363241.35,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Informationstechnologie",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "US0846707026",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "BERKSHIRE HATHAWAY INC CLASS B",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "0,906%",
+      "sortValue": 0.90552715,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "279,60 Mio. USD",
+      "sortValue": 279595085.25,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Finanzen",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "US92826C8394",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "VISA CLASS A",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "0,782%",
+      "sortValue": 0.78204982,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "241,47 Mio. USD",
+      "sortValue": 241469609.76,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Finanzen",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "US30233Q1085",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "EXXONMOBIL HOLDINGS CORP",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "0,762%",
+      "sortValue": 0.76202078,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "235,29 Mio. USD",
+      "sortValue": 235285341.57,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Energie",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "US4781601046",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "JOHNSON & JOHNSON",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "0,758%",
+      "sortValue": 0.75797973,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "234,04 Mio. USD",
+      "sortValue": 234037609.67,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Gesundheitswesen",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "NL0010273215",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "ASML HOLDING",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "0,652%",
+      "sortValue": 0.65213762,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "201,36 Mio. USD",
+      "sortValue": 201357270.58,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Niederlande",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Informationstechnologie",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "US9311421039",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "WALMART",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "0,614%",
+      "sortValue": 0.61389427,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "189,55 Mio. USD",
+      "sortValue": 189549062.48,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Basiskonsumgüter",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "US57636Q1040",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "MASTERCARD CLASS A",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "0,594%",
+      "sortValue": 0.59384508,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "183,36 Mio. USD",
+      "sortValue": 183358573.71,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Finanzen",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "US00287Y1091",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "ABBVIE",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "0,579%",
+      "sortValue": 0.5789703,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "178,77 Mio. USD",
+      "sortValue": 178765763.4,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Gesundheitswesen",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "US22160K1051",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "COSTCO WHOLESALE CORP",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "0,527%",
+      "sortValue": 0.52713868,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "162,76 Mio. USD",
+      "sortValue": 162761972.62,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Basiskonsumgüter",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "US7427181091",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "PROCTER & GAMBLE",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "0,438%",
+      "sortValue": 0.43776992,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "135,17 Mio. USD",
+      "sortValue": 135168029.44,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Basiskonsumgüter",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "US17275R1023",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "CISCO SYSTEMS INC",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "0,434%",
+      "sortValue": 0.43398652,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "134,00 Mio. USD",
+      "sortValue": 133999846.4,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Informationstechnologie",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "US1667641005",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "CHEVRON",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "0,433%",
+      "sortValue": 0.43341567,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "133,82 Mio. USD",
+      "sortValue": 133823589.66,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Energie",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "_CURRENCYUSD",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "US DOLLAR",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "0,219%",
+      "sortValue": 0.21933138,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "67,72 Mio. USD",
+      "sortValue": 67721852.94,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "unbekannt",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Cash",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "_CURRENCYEUR",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "EURO CURRENCY",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "0,016%",
+      "sortValue": 0.01592943,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "4,92 Mio. USD",
+      "sortValue": 4918452.54,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "--",
+      "type": "empty"
+     },
+     "column_4": {
+      "value": "unbekannt",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Cash",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "_CURRENCYDKK",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "DANISH KRONE",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "0,013%",
+      "sortValue": 0.01294052,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "4,00 Mio. USD",
+      "sortValue": 3995582.4,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Dänemark",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "unbekannt",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Cash",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "_CURRENCYSGD",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "SINGAPORE DOLLAR",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "0,011%",
+      "sortValue": 0.01086719,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "3,36 Mio. USD",
+      "sortValue": 3355408.02,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Singapur",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "unbekannt",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Cash",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "_CURRENCYCAD",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "CANADIAN DOLLAR",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "0,009%",
+      "sortValue": 0.00912927,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "2,82 Mio. USD",
+      "sortValue": 2818799.1,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Kanada",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "unbekannt",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Cash",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "US436CVR0216",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "--",
+      "type": "empty"
+     },
+     "column_1": {
+      "value": "0,000%",
+      "sortValue": 2e-08,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "0,00 Mio. USD",
+      "sortValue": 6.82,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Staaten von Amerika",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "unbekannt",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "___ADI2VD0J5",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "MSCI WORLD INDEX  DEC26",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "0,000%",
+      "sortValue": 0.0,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "0,00 Mio. USD",
+      "sortValue": 0.0,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Deutschland",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "unbekannt",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Future",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "CA21037X1345",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "CONSTELLATION SOFTWARE INC",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "0,000%",
+      "sortValue": 0.0,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "0,00 Mio. USD",
+      "sortValue": 0.0,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Kanada",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "unbekannt",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Warrants",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "GB00B7FC0762",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "NMC HEALTH PLC",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "0,000%",
+      "sortValue": 0.0,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "0,00 Mio. USD",
+      "sortValue": 1.5,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Vereinigte Arabische Emirate",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Gesundheitswesen",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    },
+    {
+     "header": {
+      "value": "IL0011574030",
+      "type": "text"
+     },
+     "column_0": {
+      "value": "ISRACARD LTD",
+      "type": "text"
+     },
+     "column_1": {
+      "value": "0,000%",
+      "sortValue": 0.0,
+      "type": "text"
+     },
+     "column_2": {
+      "value": "0,00 Mio. USD",
+      "sortValue": 2.98,
+      "type": "text"
+     },
+     "column_3": {
+      "value": "Israel",
+      "type": "text"
+     },
+     "column_4": {
+      "value": "Finanzen",
+      "type": "text"
+     },
+     "column_5": {
+      "value": "Aktien",
+      "type": "text"
+     }
+    }
+   ],
+   "summary": [],
+   "sortable": true,
+   "isMatrix": false,
+   "noRowHeader": false,
+   "standAlone": true,
+   "stickyHeader": false,
+   "downloadLinks": [
+    {
+     "text": "Komplette Wertpapierliste herunterladen",
+     "title": "",
+     "href": "https://etf.deutsche-am.com/etfdata/export/DEU/DEU/excel/product/constituent/IE00BJ0KDQ92/",
+     "target": "_blank",
+     "tealiumTrackingModel": {
+      "eventSource": "DAM|passive|de|de|/de-de/IE00BJ0KDQ92-msci-world-ucits-etf-1c/",
+      "eventComponentName": "Download Link",
+      "eventTitle": "Komplette Wertpapierliste herunterladen"
+     },
+     "name": "Komplette Wertpapierliste herunterladen",
+     "url": "https://etf.deutsche-am.com/etfdata/export/DEU/DEU/excel/product/constituent/IE00BJ0KDQ92/",
+     "autoHyphenation": "custom"
+    }
+   ],
+   "initialSort": "column_1.sortValue",
+   "initialSortOrder": -1,
+   "footnoteComponentId": "securitiesheldtable-securitiesholding",
+   "rowsPerPage": 15,
+   "secondSortOrder": 1,
+   "id": "securitiesheldtable-securitiesholding",
+   "headlineText": "Wertpapiere des Wertpapierkorbs",
+   "disclaimers": [
+    {
+     "text": "<p>Quelle: DWS 09.11.2026</p>",
+     "disableDefaultWrapping": true
+    }
+   ],
+   "expanded": false
+  }
+ ],
+ "accordionItems": [],
+ "accordionDisclaimers": [],
+ "settings": [],
+ "sideNavigationTitle": "",
+ "headlineText": "",
+ "asOfDate": "",
+ "disclaimerHtml": []
+}

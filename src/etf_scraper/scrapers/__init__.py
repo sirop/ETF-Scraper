@@ -15,10 +15,12 @@ from etf_scraper.scrapers.amundi import AmundiListings
 from etf_scraper.scrapers.franklin_eu import FranklinEUListings
 from etf_scraper.scrapers.hsbc import HSBCListings
 from etf_scraper.scrapers.vaneck_eu import VanEckEUListings
+from etf_scraper.scrapers.xtrackers import XtrackersListings
 
 __all__ = [
     "HSBCListings",
     "VanEckEUListings",
+    "XtrackersListings",
     "AmundiListings",
     "FranklinEUListings",
     "GlobalXEUListings",
