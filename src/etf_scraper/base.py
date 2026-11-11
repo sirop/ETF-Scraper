@@ -31,6 +31,7 @@ class Provider(Enum):
     Amundi = "Amundi"  # UCITS only, so no _EU suffix
     Franklin_EU = "Franklin_EU"
     HSBC = "HSBC"  # UCITS only
+    VanEck_EU = "VanEck_EU"
 
 
 class SecurityListing(NamedTuple):

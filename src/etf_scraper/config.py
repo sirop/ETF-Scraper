@@ -10,8 +10,10 @@ try:
 
     LISTINGS_FILE = files("etf_scraper.data").joinpath("listings.csv")
     HSBC_SEED_FILE = files("etf_scraper.data").joinpath("hsbc_etfs.csv")
+    VANECK_EU_SEED_FILE = files("etf_scraper.data").joinpath("vaneck_eu_etfs.csv")
 except:
     from pathlib import Path
 
     LISTINGS_FILE = Path(__file__).parent.joinpath("data/listings.csv")
     HSBC_SEED_FILE = Path(__file__).parent.joinpath("data/hsbc_etfs.csv")
+    VANECK_EU_SEED_FILE = Path(__file__).parent.joinpath("data/vaneck_eu_etfs.csv")

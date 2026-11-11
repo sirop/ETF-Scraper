@@ -47,6 +47,9 @@ jobs:
           - provider: HSBC         # HSBC FTSE 100
             isin: IE00B42TW061
             expected_rows: 100
+          - provider: VanEck_EU    # VanEck Semiconductor (SMH)
+            isin: IE00BMC38736
+            expected_rows: 22
     uses: ./.github/workflows/check-scraper.yml
     with:
       etf_ticker: ${{ matrix.isin }}
