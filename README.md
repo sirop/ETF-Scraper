@@ -163,6 +163,22 @@ We are therefore limited by what they publish, in particular:
 
 Also there are other ETF providers which I haven't implemented. Any pull requests to implement others are welcome!
 
+### Holdings Files Downloaded by Hand
+
+Some providers block automated access (eg WisdomTree with a bot challenge), but their fund pages still offer a holdings download to every visitor. Download the file in your browser and parse it into the common format (`source` = `manual_download`); no requests are made:
+
+```python
+from etf_scraper import import_holdings_file
+
+df = import_holdings_file(
+    "WisdomTree", "fund-holdings-1000492.csv",
+    fund_isin="IE00...", fund_ticker="...",  # the file doesn't say which fund it is
+    as_of_date="2026-11-11",                 # default: the file's modification date
+)
+```
+
+Supported files: WisdomTree (`fund-holdings-<id>.csv`: sector, name, weight).
+
 ### Historical Holdings from SEC N-PORT Filings
 
 For providers that only publish recent holdings, `etf_scraper.edgar` retrieves historical holdings from the public N-PORT filings US registered funds make to the SEC. It works for any US registered ETF or mutual fund, not only the providers above.
