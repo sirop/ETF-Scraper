@@ -1,9 +1,8 @@
 # ETF-Scraper
 
-![IShares](https://github.com/nikulpatel3141/ETF-Scraper/actions/workflows/check_ishares.yml/badge.svg)
-![SSGA](https://github.com/nikulpatel3141/ETF-Scraper/actions/workflows/check_ssga.yml/badge.svg)
-![Vanguard](https://github.com/nikulpatel3141/ETF-Scraper/actions/workflows/check_vanguard.yml/badge.svg)
-![Invesco](https://github.com/nikulpatel3141/ETF-Scraper/actions/workflows/check_invesco.yml/badge.svg)
+![US providers](https://github.com/sirop/ETF-Scraper/actions/workflows/check_us.yml/badge.svg)
+![EU providers](https://github.com/sirop/ETF-Scraper/actions/workflows/check_eu.yml/badge.svg)
+![Unit tests](https://github.com/sirop/ETF-Scraper/actions/workflows/tests.yml/badge.svg)
 
 Scrape public ETF and Mutual Fund holdings information, currently from iShares, SSGA, Vanguard and Invesco.
 
@@ -212,7 +211,7 @@ This copy is loaded by default in `ETFScraper.__init__` using `etf_scraper.load_
 
 ## Status Badges
 
-The status badges at the top of the page are from worklows running daily to query latest holdings from all currently implemented providers for their respectively most popular ETFs.
+The status badges at the top of the page are from workflows running on weekdays that query the latest holdings of one popular ETF per provider (`check_us.yml`, `check_eu.yml`), plus the unit tests.
 
 ## Testing
 

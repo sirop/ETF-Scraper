@@ -1,0 +1,44 @@
+name: US providers
+
+# Daily live check: one well known ETF per US provider, looked up by ticker.
+# expected_rows is a lower bound for the output lines (holdings + header).
+# The schedule only runs on the default branch; pushes that touch the US
+# scrapers run it on any branch.
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/check_us.yml"
+      - ".github/workflows/check-scraper.yml"
+      - "src/etf_scraper/scrapers/ishares.py"
+      - "src/etf_scraper/scrapers/ssga.py"
+      - "src/etf_scraper/scrapers/vanguard.py"
+      - "src/etf_scraper/scrapers/invesco.py"
+      - "src/etf_scraper/http.py"
+  schedule:
+    - cron: "01 19 * * 1-5"
+
+jobs:
+  scrape:
+    name: ${{ matrix.provider }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - provider: IShares   # iShares Core S&P 500
+            ticker: IVV
+            expected_rows: 495
+          - provider: SSGA      # SPDR S&P 500
+            ticker: SPY
+            expected_rows: 495
+          - provider: Vanguard  # Vanguard S&P 500
+            ticker: VOO
+            expected_rows: 495
+          - provider: Invesco   # Invesco QQQ
+            ticker: QQQ
+            expected_rows: 95
+    uses: ./.github/workflows/check-scraper.yml
+    with:
+      etf_ticker: ${{ matrix.ticker }}
+      expected_rows: ${{ format('{0}', matrix.expected_rows) }}
