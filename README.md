@@ -177,7 +177,7 @@ df = import_holdings_file(
 )
 ```
 
-Supported files: WisdomTree (`fund-holdings-<id>.csv`: sector, name, weight).
+Supported files: WisdomTree (`fund-holdings-<number>.csv`: sector, name, weight). The file name carries WisdomTree's product number; known numbers are mapped to ISIN and ticker (`data/wisdomtree_funds.csv`), so `import_holdings_file("WisdomTree", "fund-holdings-1000490.csv")` needs no further arguments. Add numbers from a fund page saved in your browser with `scripts/update_wisdomtree_funds.py`.
 
 ### Historical Holdings from SEC N-PORT Filings
 
