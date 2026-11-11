@@ -12,9 +12,11 @@ from etf_scraper.scrapers.ssga_eu import SSGAEUListings
 from etf_scraper.scrapers.invesco_eu import InvescoEUListings
 from etf_scraper.scrapers.globalx_eu import GlobalXEUListings
 from etf_scraper.scrapers.amundi import AmundiListings
+from etf_scraper.scrapers.franklin_eu import FranklinEUListings
 
 __all__ = [
     "AmundiListings",
+    "FranklinEUListings",
     "GlobalXEUListings",
     "InvescoEUListings",
     "SSGAEUListings",

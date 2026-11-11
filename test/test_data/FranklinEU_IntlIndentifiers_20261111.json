@@ -1,0 +1,946 @@
+{
+ "data": {
+  "PPSS": [
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "27046",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FVSJ",
+       "isin": "IE00BFWXDV39",
+       "cusip": "G3659Z152",
+       "bloomberg": "FLQA LN",
+       "sedol": "BF0T4P4",
+       "wkn": "A2JKUU"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "36452",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FOHW",
+       "isin": "IE0003WEWAX4",
+       "cusip": "G3R0KT102",
+       "bloomberg": "FOHW GY",
+       "sedol": "BMCJZ70",
+       "wkn": "A3EFKW"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "40163",
+       "shclcode": "ETD",
+       "ticker": "EMGD",
+       "isin": "IE000GTF7GF4",
+       "cusip": "-",
+       "bloomberg": "-",
+       "sedol": "BWBR1X3",
+       "wkn": "A4279P"
+      }
+     },
+     {
+      "identifiers": {
+       "fundid": "40163",
+       "shclcode": "ETA",
+       "ticker": "EMGM",
+       "isin": "IE0004I037N4",
+       "cusip": "G3R0KT193",
+       "bloomberg": "EMGM GR",
+       "sedol": "BSGYZZ1",
+       "wkn": "A408N2"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "48638",
+       "shclcode": "SINGLCLASS",
+       "ticker": "CBSM",
+       "isin": "IE000XJA2OU4",
+       "cusip": "-",
+       "bloomberg": "CBSM GR",
+       "sedol": "BVPY100",
+       "wkn": "A41MPD"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "46588",
+       "shclcode": "NV5",
+       "ticker": "USME",
+       "isin": "IE000JQ1PF28",
+       "cusip": "-",
+       "bloomberg": "USME GR",
+       "sedol": "BWBR1S8",
+       "wkn": "A4279Q"
+      }
+     },
+     {
+      "identifiers": {
+       "fundid": "46588",
+       "shclcode": "ETA",
+       "ticker": "USMC",
+       "isin": "IE0008M1R3N4",
+       "cusip": "-",
+       "bloomberg": "USMC GR",
+       "sedol": "BTRV990",
+       "wkn": "A414W8"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "25801",
+       "shclcode": "ETA",
+       "ticker": "DVDE",
+       "isin": "IE000IMGE5W5",
+       "cusip": "-",
+       "bloomberg": "DVDE GR",
+       "sedol": "-",
+       "wkn": "A41FUS"
+      }
+     },
+     {
+      "identifiers": {
+       "fundid": "25801",
+       "shclcode": "ETD",
+       "ticker": "FLXD",
+       "isin": "IE00BF2B0L69",
+       "cusip": "G3659Z111",
+       "bloomberg": "FLXD GR",
+       "sedol": "BF2B0L6",
+       "wkn": "A2DTF2"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "36451",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FOFD",
+       "isin": "IE000ZOKLHY7",
+       "cusip": "G3R0KT110",
+       "bloomberg": "FOFD GY",
+       "sedol": "BMCJYT5",
+       "wkn": "A3EFKX"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "101819",
+       "shclcode": "ETA",
+       "ticker": "",
+       "isin": "IE000DV7C2N9",
+       "cusip": "-",
+       "bloomberg": "-",
+       "sedol": "-",
+       "wkn": "A42SBH"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "46790",
+       "shclcode": "ETA",
+       "ticker": "SHOR",
+       "isin": "IE000E02WFD5",
+       "cusip": "-",
+       "bloomberg": "SHOR GR",
+       "sedol": "-",
+       "wkn": "A414W9"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "41675",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FLXS",
+       "isin": "IE000C7DDDX4",
+       "cusip": "G3R0KT292",
+       "bloomberg": "FLXS GR",
+       "sedol": "BRYQB32",
+       "wkn": "A40QKJ"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "51247",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FTFN",
+       "isin": "IE000KG7KXI7",
+       "cusip": "-",
+       "bloomberg": "-",
+       "sedol": "BVVH910",
+       "wkn": "A42AGK"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "41206",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FSPU",
+       "isin": "IE0006FAD976",
+       "cusip": "-",
+       "bloomberg": "FSPU GR",
+       "sedol": "BTVLDH2",
+       "wkn": "A40YMF"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "41207",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FSPW",
+       "isin": "IE0006WOV4I9",
+       "cusip": "-",
+       "bloomberg": "FSPW GR",
+       "sedol": "BTVLDD8",
+       "wkn": "A40YMG"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "33250",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FLCV",
+       "isin": "IE000YZIVX22",
+       "cusip": "G3659Z285",
+       "bloomberg": "FLCV GR",
+       "sedol": "BPBQT71",
+       "wkn": "A3DJVX"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "100528",
+       "shclcode": "SINGLCLASS",
+       "ticker": "PFUS",
+       "isin": "IE000JKWOG61",
+       "cusip": "-",
+       "bloomberg": "-",
+       "sedol": "-",
+       "wkn": "A42P4M"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "38418",
+       "shclcode": "ETA",
+       "ticker": "GSOV",
+       "isin": "IE000P0R7WK6",
+       "cusip": "G3R0KT177",
+       "bloomberg": "GSOV GY",
+       "sedol": "BR88VJ0",
+       "wkn": "A3EUB3"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "27854",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FLXK",
+       "isin": "IE00BHZRR030",
+       "cusip": "G3659Z236",
+       "bloomberg": "FLXK LN",
+       "sedol": "BHZRR03",
+       "wkn": "A2PB5X"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "38416",
+       "shclcode": "ADV",
+       "ticker": "",
+       "isin": "IE0009QSSRV9",
+       "cusip": "-",
+       "bloomberg": "-",
+       "sedol": "BWRSYH5",
+       "wkn": "A42SBL"
+      }
+     },
+     {
+      "identifiers": {
+       "fundid": "38416",
+       "shclcode": "ETD",
+       "ticker": "EIGC",
+       "isin": "IE000H0TSO96",
+       "cusip": "G3R0KT185",
+       "bloomberg": "EIGC GY",
+       "sedol": "BR88V89",
+       "wkn": "A3EUB1"
+      }
+     },
+     {
+      "identifiers": {
+       "fundid": "38416",
+       "shclcode": "ETA",
+       "ticker": "EIGA",
+       "isin": "IE0001PY6688",
+       "cusip": "-",
+       "bloomberg": "EIGA GR",
+       "sedol": "BTZNY26",
+       "wkn": "A425B3"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "33308",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FLRA",
+       "isin": "IE000IM4K4K2",
+       "cusip": "G3659Z301",
+       "bloomberg": "FLRA GR",
+       "sedol": "BPG5FF3",
+       "wkn": "A3DRF9"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "51246",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FTCD",
+       "isin": "IE000PEYL7P5",
+       "cusip": "-",
+       "bloomberg": "-",
+       "sedol": "BVVH921",
+       "wkn": "A42AGL"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "27850",
+       "shclcode": "ETA",
+       "ticker": "FLRG",
+       "isin": "IE00BHZRR253",
+       "cusip": "G3659Z210",
+       "bloomberg": "FLRG LN",
+       "sedol": "BHZRR25",
+       "wkn": "A2PB5T"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "27851",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FLXB",
+       "isin": "IE00BHZRQY00",
+       "cusip": "G3659Z194",
+       "bloomberg": "FLXB LN",
+       "sedol": "BHZRQY0",
+       "wkn": "A2PB5U"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "100790",
+       "shclcode": "SINGLCLASS",
+       "ticker": "",
+       "isin": "IE000VDECTE8",
+       "cusip": "-",
+       "bloomberg": "-",
+       "sedol": "-",
+       "wkn": "A42SBM"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "29819",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FLX5",
+       "isin": "IE00BMDPBZ72",
+       "cusip": "G3659Z244",
+       "bloomberg": "USPA LN",
+       "sedol": "BMDPBZ7",
+       "wkn": "A2P5CL"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "38417",
+       "shclcode": "ETA",
+       "ticker": "GCOR",
+       "isin": "IE0006K7DEL9",
+       "cusip": "G3R0KT144",
+       "bloomberg": "GCOR GY",
+       "sedol": "BR88V90",
+       "wkn": "A3EUB2"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "33309",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FVEM",
+       "isin": "IE000QLV3SY5",
+       "cusip": "G3659Z293",
+       "bloomberg": "FVEM GR",
+       "sedol": "BPBQTP9",
+       "wkn": "A3DJVW"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "41203",
+       "shclcode": "SINGLCLASS",
+       "ticker": "",
+       "isin": "IE000EW6F1G9",
+       "cusip": "-",
+       "bloomberg": "-",
+       "sedol": "-",
+       "wkn": "-"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "25802",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FLXU",
+       "isin": "IE00BF2B0P08",
+       "cusip": "G3659Z129",
+       "bloomberg": "FLXU GR",
+       "sedol": "BF2B0P0",
+       "wkn": "A2DTFZ"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "27049",
+       "shclcode": "ETA",
+       "ticker": "FVSA",
+       "isin": "IE000STIHQB2",
+       "cusip": "G3R0KT128",
+       "bloomberg": "FVSA GY",
+       "sedol": "BMVRHH9",
+       "wkn": "A3D8NT"
+      }
+     },
+     {
+      "identifiers": {
+       "fundid": "27049",
+       "shclcode": "ETD",
+       "ticker": "FVSH",
+       "isin": "IE00BFWXDY69",
+       "cusip": "G3659Z160",
+       "bloomberg": "FVSH GY",
+       "sedol": "BF0T487",
+       "wkn": "A2JKUX"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "27048",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FVUI",
+       "isin": "IE00BFWXDX52",
+       "cusip": "G3659Z178",
+       "bloomberg": "FLUC LN",
+       "sedol": "BF0T4B0",
+       "wkn": "A2JKUW"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "100250",
+       "shclcode": "ETA",
+       "ticker": "",
+       "isin": "IE0008307TF2",
+       "cusip": "-",
+       "bloomberg": "-",
+       "sedol": "-",
+       "wkn": "A42K1V"
+      }
+     },
+     {
+      "identifiers": {
+       "fundid": "100250",
+       "shclcode": "ETD",
+       "ticker": "",
+       "isin": "IE0001V98BY6",
+       "cusip": "-",
+       "bloomberg": "-",
+       "sedol": "-",
+       "wkn": "-"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "25799",
+       "shclcode": "ETD",
+       "ticker": "FLXX",
+       "isin": "IE00BF2B0M76",
+       "cusip": "G3659Z145",
+       "bloomberg": "FLXX GR",
+       "sedol": "BF2B0M7",
+       "wkn": "A2DTF0"
+      }
+     },
+     {
+      "identifiers": {
+       "fundid": "25799",
+       "shclcode": "ETA",
+       "ticker": "DVDG",
+       "isin": "IE000ZZJ48Q0",
+       "cusip": "-",
+       "bloomberg": "DVDG GR",
+       "sedol": "-",
+       "wkn": "A41FUR"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "51250",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FTTC",
+       "isin": "IE000EQGURT5",
+       "cusip": "-",
+       "bloomberg": "-",
+       "sedol": "BVVH909",
+       "wkn": "A42AGJ"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "48639",
+       "shclcode": "ETM",
+       "ticker": "FTUM",
+       "isin": "IE00082967W7",
+       "cusip": "-",
+       "bloomberg": "-",
+       "sedol": "-",
+       "wkn": "A42K1U"
+      }
+     },
+     {
+      "identifiers": {
+       "fundid": "48639",
+       "shclcode": "ETD",
+       "ticker": "FTUI",
+       "isin": "IE0001T0BHM5",
+       "cusip": "-",
+       "bloomberg": "-",
+       "sedol": "BVV9H67",
+       "wkn": "A41MPE"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "40164",
+       "shclcode": "SINGLCLASS",
+       "ticker": "EXCN",
+       "isin": "IE0006D3PGW3",
+       "cusip": "G3R0KT227",
+       "bloomberg": "EXCN GR",
+       "sedol": "BSGZ048",
+       "wkn": "A408N4"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "101824",
+       "shclcode": "ETA",
+       "ticker": "",
+       "isin": "IE000C9KZ7X1",
+       "cusip": "-",
+       "bloomberg": "-",
+       "sedol": "-",
+       "wkn": "A42SBK"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "25800",
+       "shclcode": "ETD",
+       "ticker": "FLDE",
+       "isin": "IE000CLL0K98",
+       "cusip": "-",
+       "bloomberg": "-",
+       "sedol": "-",
+       "wkn": "A42K1W"
+      }
+     },
+     {
+      "identifiers": {
+       "fundid": "25800",
+       "shclcode": "ETA",
+       "ticker": "FLXE",
+       "isin": "IE00BF2B0K52",
+       "cusip": "G3659Z103",
+       "bloomberg": "FLXE LN",
+       "sedol": "BF2B0K5",
+       "wkn": "A2DTF1"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "29820",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FLXP",
+       "isin": "IE00BMDPBY65",
+       "cusip": "G3659Z251",
+       "bloomberg": "PARI LN",
+       "sedol": "BMDPBY6",
+       "wkn": "A2P5CM"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "32637",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FLXT",
+       "isin": "IE000CM02H85",
+       "cusip": "G3659Z269",
+       "bloomberg": "FLXT LN",
+       "sedol": "BNDWZT7",
+       "wkn": "A3C9A1"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "27852",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FLXC",
+       "isin": "IE00BHZRR147",
+       "cusip": "G3659Z228",
+       "bloomberg": "FLXC LN",
+       "sedol": "BHZRR14",
+       "wkn": "A2PB5V"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "33310",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FVCH",
+       "isin": "IE000EBPC0Z7",
+       "cusip": "G3659Z277",
+       "bloomberg": "FVCH GR",
+       "sedol": "BPBQTF9",
+       "wkn": "A3DJVV"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "40161",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FLXA",
+       "isin": "IE000AZOUN82",
+       "cusip": "G3R0KT219",
+       "bloomberg": "FLXA GR",
+       "sedol": "BQXJXW8",
+       "wkn": "A401XH"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "40162",
+       "shclcode": "ADV",
+       "ticker": "",
+       "isin": "IE000H12VGI6",
+       "cusip": "-",
+       "bloomberg": "-",
+       "sedol": "-",
+       "wkn": "-"
+      }
+     },
+     {
+      "identifiers": {
+       "fundid": "40162",
+       "shclcode": "ETA",
+       "ticker": "",
+       "isin": "-",
+       "cusip": "-",
+       "bloomberg": "DWLD GR",
+       "sedol": "-",
+       "wkn": "-"
+      }
+     },
+     {
+      "identifiers": {
+       "fundid": "40162",
+       "shclcode": "SINGLCLASS",
+       "ticker": "DWLD",
+       "isin": "IE000CVOSY02",
+       "cusip": "G3R0KT201",
+       "bloomberg": "DWLD GR",
+       "sedol": "BSGYZT5",
+       "wkn": "A408N3"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "41221",
+       "shclcode": "ETA",
+       "ticker": "FLXJ",
+       "isin": "IE000D0T0BO1",
+       "cusip": "-",
+       "bloomberg": "FLXJ GR",
+       "sedol": "BLGSLV2",
+       "wkn": "A40GM0"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "50448",
+       "shclcode": "SINGLCLASS",
+       "ticker": "",
+       "isin": "IE000XVRIQE1",
+       "cusip": "-",
+       "bloomberg": "-",
+       "sedol": "-",
+       "wkn": "-"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "51249",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FTCS",
+       "isin": "IE000TMJDGV1",
+       "cusip": "-",
+       "bloomberg": "-",
+       "sedol": "BVVH932",
+       "wkn": "A42AGM"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "48640",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FCEU",
+       "isin": "IE000CZU3JH0",
+       "cusip": "-",
+       "bloomberg": "-",
+       "sedol": "BWBX8F2",
+       "wkn": "A41U6E"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "27853",
+       "shclcode": "SINGLCLASS",
+       "ticker": "FLXI",
+       "isin": "IE00BHZRQZ17",
+       "cusip": "G3659Z202",
+       "bloomberg": "FLXI LN",
+       "sedol": "BHZRQZ1",
+       "wkn": "A2PB5W"
+      }
+     }
+    ]
+   },
+   {
+    "shareclass": [
+     {
+      "identifiers": {
+       "fundid": "41838",
+       "shclcode": "ETA",
+       "ticker": "DVDU",
+       "isin": "IE000HSER094",
+       "cusip": "-",
+       "bloomberg": "DVDU GR",
+       "sedol": "BVZMHK6",
+       "wkn": "A425B4"
+      }
+     },
+     {
+      "identifiers": {
+       "fundid": "41838",
+       "shclcode": "ETD",
+       "ticker": "UDVD",
+       "isin": "IE000Z4OBQK4",
+       "cusip": "-",
+       "bloomberg": "UDVD GR",
+       "sedol": "BT223F2",
+       "wkn": "A40UHS"
+      }
+     }
+    ]
+   }
+  ]
+ }
+}
