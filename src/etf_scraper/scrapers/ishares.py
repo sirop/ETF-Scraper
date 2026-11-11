@@ -1,21 +1,24 @@
-"""iShares (BlackRock) US listings and holdings scraper."""
+"""iShares (BlackRock) US listings and holdings scraper.
+
+Sources (public, plain requests with an honest User-Agent):
+- Fund list: the US product screener JSON.
+- Holdings: each product page publishes <product page>/latest-holdings.csv.
+  The older "<product page>/1467271812596.ajax?fileType=csv" download (which took
+  an asOfDate) now returns an HTML page, so only the latest holdings are available
+  from iShares. Past US holdings are available from SEC N-PORT filings.
+"""
 
 import logging
 from typing import Union, List
 from urllib.parse import urljoin
-from io import StringIO
 from datetime import date, datetime
 
 import pandas as pd
+import requests
 import numpy as np
 
-from etf_scraper.utils import (
-    check_missing_cols,
-    check_data_mismatch,
-    safe_urljoin,
-    set_numeric_cols,
-    strip_str_cols,
-)
+from etf_scraper.utils import check_missing_cols, safe_urljoin
+from etf_scraper.parsers import parse_date, read_table, split_preamble, to_number
 from etf_scraper.base import (
     Provider,
     ProviderListings,
@@ -37,7 +40,7 @@ class ISharesListings(ProviderListings):
         "/us/product-screener/product-screener-v3.1.jsn?dcrPath=/templatedata/config/product-screener-v3/"
         "data/en/us-ishares/ishares-product-screener-backend-config&siteEntryPassthrough=true"
     )
-    ajax_endpoint = "1467271812596.ajax"
+    holdings_file = "latest-holdings.csv"
 
     listing_resp_mapping = {
         "fundName": "fund_name",
@@ -63,6 +66,9 @@ class ISharesListings(ProviderListings):
         "Asset Class": "asset_class",
         "Market Value": "market_value",
         "Weight (%)": "weight",
+        "Market Weight": "weight",  # equity funds, layout since 2026
+        "Notional Weight": "notional_weight",
+        "Type": "security_type",
         "Notional Value": "notional_value",
         "Quantity": "amount",
         "Price": "price",
@@ -92,6 +98,7 @@ class ISharesListings(ProviderListings):
     holdings_numeric_cols = [
         "amount",
         "weight",
+        "notional_weight",
         "market_value",
         "price",
         "notional_value",
@@ -108,16 +115,16 @@ class ISharesListings(ProviderListings):
 
     _fund_type_map = {"etf": "ETF", "mutualfund": "MF"}
 
+    # present in every layout (ETFs, bond funds, mutual funds)
+    required_holding_cols = ["Name", "Market Value"]
+    weight_cols = ["Weight (%)", "Market Weight"]
+    _missing = {"-", "", "\xa0"}
+
     @classmethod
-    def exp_holding_cols(cls, asset_class: str) -> List[str]:
-        if asset_class in ("Equity", "Real Estate", "Commodity"):
-            return ["Ticker", "Quantity", "Market Value"]
-        elif asset_class == "Fixed Income":
-            return ["CUSIP", "Market Value"]
-        else:
-            raise NotImplementedError(
-                f"iShares holdings scraper not implemented for {asset_class}"
-            )
+    def exp_holding_cols(cls, asset_class: str = "Equity") -> List[str]:
+        """Columns every holdings download must have. The layouts no longer differ
+        enough by asset class to check more than this."""
+        return list(cls.required_holding_cols)
 
     @classmethod
     def retrieve_listings(cls):
@@ -159,6 +166,7 @@ class ISharesListings(ProviderListings):
         resp_df_["net_assets"] = resp_df_["net_assets"].apply(parse_net)
         resp_df_["fund_type"] = resp_df_["fund_type"].apply(parse_fund_type)
         resp_df_["provider"] = cls.provider
+        resp_df_["domicile"] = resp_df_["isin"].str[:2]
         return resp_df_.reset_index(drop=True)
 
     @classmethod
@@ -166,87 +174,74 @@ class ISharesListings(ProviderListings):
         return datetime.strptime(date_str, "%b %d, %Y").date()  # eg "Jan 03, 2022"
 
     @classmethod
-    def _parse_holdings_resp(cls, resp_content, asset_class="Equity"):
-        header_rows = 9
-        raw_data = StringIO(resp_content)
-        summary_data = [raw_data.readline().rstrip("\n") for _ in range(header_rows)]
+    def _parse_date_or_none(cls, value):
+        try:
+            return cls._parse_holdings_date(str(value).strip())
+        except ValueError:
+            return None
 
-        as_of_date = {
-            k.split(",", 1)[-1].strip("'\"")
-            for k in summary_data
-            if "Fund Holdings as of".lower() in k.lower()
-        }
+    @classmethod
+    def holdings_url(cls, product_url: str) -> str:
+        return product_url.rstrip("/") + "/" + cls.holdings_file
 
-        if len(as_of_date) != 1:
+    @classmethod
+    def _parse_holdings_resp(cls, resp_content: str, asset_class: str = "Equity"):
+        """Parse a holdings CSV download. Returns (holdings_df, as_of_date).
+
+        Handles the ETF layout (9 preamble lines), the shorter mutual fund layout
+        and the older layout with a single "Weight (%)" column.
+        """
+        metadata, table = split_preamble(resp_content, cls.exp_holding_cols(asset_class))
+
+        as_of_str = next(
+            (v for k, v in metadata.items() if "holdings as of" in k.lower()), None
+        )
+        if as_of_str is None:
             raise ValueError(
-                f"Was expecting an 'as of date' indicator, instead found: {as_of_date}"
+                f"Was expecting an 'as of date' indicator, instead found: {metadata}"
+            )
+        as_of_str = as_of_str.strip().strip("'\"")
+        if as_of_str == "-":
+            raise InvalidParameterError("Found '-' as holdings date -> no data returned")
+        as_of_date = cls._parse_date_or_none(as_of_str)
+        if as_of_date is None:
+            raise ValueError(f"Couldn't parse the holdings date {as_of_str!r}")
+        logger.debug(f"Found reported holdings date {as_of_date}")
+
+        holdings_df = read_table(table)
+        if not any(c in holdings_df.columns for c in cls.weight_cols):
+            raise ValueError(
+                f"No weight column found, columns: {list(holdings_df.columns)}"
             )
 
-        as_of_date = list(as_of_date)[0]
-
-        if as_of_date == "-":
-            raise InvalidParameterError(
-                f"Found '-' as holdings date -> no data returned"
-            )
-
-        logger.debug(f"Found reported holdings date string {as_of_date}")
-        logger.debug("Attempting to parse holdings data")
-
-        as_of_date = cls._parse_holdings_date(as_of_date)
-
-        if summary_data[-1] != "\xa0":
+        # BUG (seen in older files): the content is sometimes repeated, starting
+        # again with the fund name line. Keep only the first copy.
+        doc_intro = resp_content.lstrip("\ufeff").split("\n", 1)[0].strip()
+        first_col = holdings_df.iloc[:, 0].str.strip()
+        dupl_ind = (first_col == doc_intro).to_numpy()
+        if doc_intro and dupl_ind.any():
             logger.warning(
-                f"Was expecting \xa0 as the last line in the summary block."
-                f" Found {summary_data[-1]} instead."
+                f"Detected response contains {dupl_ind.sum()} duplicates, removing them"
             )
+            holdings_df = holdings_df.iloc[: int(np.argmax(dupl_ind))]
 
-        holdings_df = pd.read_csv(
-            raw_data, thousands=",", na_values="-"
-        )  # shouldn't need to skip any rows now
-
-        # BUG: sometimes the content is duplicated, so drop the duplicated information
-        doc_intro = summary_data[0]
-        dupl_ind = holdings_df.iloc[:, 0].fillna("").str.strip() == doc_intro.strip()
-
-        if n := dupl_ind.sum():
-            logger.warning(
-                f"Detected response contains {n} duplicates, attempting to remove them"
-            )
-            cutoff = dupl_ind.replace(False, np.nan).first_valid_index()
-            holdings_df = pd.read_csv(
-                StringIO(resp_content),
-                skiprows=header_rows,
-                nrows=cutoff,
-                thousands=",",
-                na_values="-",
-            )
-
-        check_missing_cols(
-            cls.exp_holding_cols(asset_class), holdings_df.columns, raise_error=True
-        )
         holdings_df = holdings_df.rename(columns=cls.holding_col_mapping)
+        holdings_df = holdings_df.loc[:, ~holdings_df.columns.duplicated()].copy()
 
-        def _parse_holdings_date_(x):
-            try:
-                return cls._parse_holdings_date(x)
-            except:
-                return pd.NaT
+        for col in holdings_df.columns:
+            if col in cls.holdings_numeric_cols:
+                holdings_df[col] = to_number(holdings_df[col]).values
+            elif col in cls.holdings_date_cols:
+                parsed = [cls._parse_date_or_none(x) for x in holdings_df[col]]
+                holdings_df[col] = pd.to_datetime(pd.Series(parsed, dtype="object")).values
+            else:
+                text = holdings_df[col].str.strip()
+                holdings_df[col] = text.where(~text.isin(cls._missing), np.nan)
 
-        for col in holdings_df:
-            if col in cls.holdings_date_cols:
-                parsed_dates = holdings_df[col].apply(_parse_holdings_date_)
-                holdings_df[col] = pd.to_datetime(parsed_dates)
-            elif col in cls.holdings_string_cols:
-                holdings_df[col] = holdings_df[col].astype(str)
-
-        holdings_df = holdings_df[~holdings_df["weight"].isna()]
-
-        strip_str_cols(
-            holdings_df, [k for k in cls.holdings_string_cols if k in holdings_df]
-        )
-        set_numeric_cols(
-            holdings_df, [k for k in cls.holdings_numeric_cols if k in holdings_df]
-        )
+        # footer lines (disclaimers etc) have neither weight nor market value. Real
+        # holdings can lack a weight ("-"), eg futures, collateral, unlisted stocks
+        footer = holdings_df["weight"].isna() & holdings_df["market_value"].isna()
+        holdings_df = holdings_df[~footer].reset_index(drop=True)
         return holdings_df, as_of_date
 
     @classmethod
@@ -254,36 +249,37 @@ class ISharesListings(ProviderListings):
         cls,
         ticker: str,
         product_url: str,
-        holdings_date: Union[date, None],
+        holdings_date: Union[date, None] = None,
         asset_class: str = "Equity",
     ):
-        """Query for IShares product holdings
-        Args:
-        - holdings_date: date for holdings to query. If not given, then will
-        query for the latest available holdings.
-        """
-        endpoint = safe_urljoin(product_url, cls.ajax_endpoint)
-        req_params = {
-            "fileType": "csv",
-            "fileName": f"{ticker}_holdings",
-            "dataType": "fund",
-        }
-        if holdings_date:
-            req_params = {"asOfDate": holdings_date.strftime("%Y%m%d"), **req_params}
+        """Query for iShares product holdings.
 
-        logger.debug(
-            f"Querying {cls.provider} for {ticker} holdings as of {holdings_date}"
-        )
-        resp = cls.session.get(endpoint, params=req_params, expect=())
-        resp.raise_for_status()
+        iShares only publishes the latest holdings. If holdings_date is given, it
+        must match the date of the latest file, otherwise InvalidParameterError is
+        raised (past US holdings are in SEC N-PORT filings).
+        """
+        url = cls.holdings_url(product_url)
+        logger.debug(f"Querying {cls.provider} for {ticker} holdings: {url}")
+        try:
+            resp = cls.session.get(url, expect=())
+        except requests.HTTPError as e:
+            status = getattr(e.response, "status_code", None)
+            if status in (400, 404):
+                raise InvalidParameterError(
+                    f"{cls.provider} has no holdings download for {ticker} "
+                    f"(HTTP {status}, fund possibly closed)"
+                ) from e
+            raise
 
         holdings_df, as_of_date = cls._parse_holdings_resp(
             resp.content.decode(encoding="UTF-8-SIG"), asset_class
         )
 
-        if holdings_date:
-            check_data_mismatch(
-                holdings_date, as_of_date, "holdings date", raise_error=True
+        if holdings_date and holdings_date != as_of_date:
+            raise InvalidParameterError(
+                f"{cls.provider} only provides the latest holdings (as of "
+                f"{as_of_date}), not {holdings_date}. Past US holdings are "
+                f"available from SEC N-PORT filings."
             )
 
         holdings_df["fund_ticker"] = ticker

@@ -85,13 +85,15 @@ ls /tmp/out # IVW_2022_12_30.csv IVW_2022_11_30.csv ...
 
 ```
 
+Note: iShares US no longer publishes past holdings (since 2026 its dated download returns an HTML page), so this example now only works for providers with history, eg Vanguard. Past iShares US holdings are available from SEC N-PORT filings (see below).
+
 Note: here we need to query for trading day month ends since iShares doesn't report holdings on non-trading days. This is different for Vanguard which report holdings using calendar end dates.
 
 #### Scrape Daily Historical ETF holdings
 
 The script will scrape daily dates in the given range by default, so remove the `--month_ends` flag (or pass `--no_month_ends`).
 
-As of writing this is only available for iShares ETFs.
+As of writing no provider publishes daily history any more (iShares US used to).
 
 #### Scrape Latest ETF holdings
 
@@ -145,9 +147,7 @@ This library queries ETF provider websites for holdings data.
 
 We are therefore limited by what they publish, in particular:
 
-- iShares:
-  - long history available for month end data (eg IVV returns month end data from 2010)
-  - recent daily history is also available
+- iShares (US): only latest holdings, from the `latest-holdings.csv` download on each fund page. A date can be passed only if it is the date of the latest file. Until 2026 iShares published long month end and recent daily history; that download now returns an HTML page. Past holdings are available from SEC N-PORT filings.
 - SSGA: only latest holdings
 - iShares EU (UCITS ETFs, provider `IShares_EU`): only latest holdings, from the "latest holdings" CSV each fund page on the iShares UK site publishes. Funds can be looked up by ISIN, eg `query_holdings("IE00B5BMR087")` for CSPX.
 - State Street SPDR EU (UCITS ETFs, provider `SSGA_EU`): only latest holdings, from the daily holdings Excel file each fund page links to. Each holding includes its ISIN and SEDOL.
