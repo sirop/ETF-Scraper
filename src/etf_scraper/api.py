@@ -26,6 +26,7 @@ from etf_scraper.scrapers import (
     HSBCListings,
     VanEckEUListings,
     XtrackersListings,
+    LGIMListings,
 )
 
 SCRAPERS = {
@@ -44,6 +45,7 @@ SCRAPERS = {
         HSBCListings,
         VanEckEUListings,
         XtrackersListings,
+        LGIMListings,
     ]
 }
 

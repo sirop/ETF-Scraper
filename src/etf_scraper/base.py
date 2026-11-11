@@ -33,6 +33,7 @@ class Provider(Enum):
     HSBC = "HSBC"  # UCITS only
     VanEck_EU = "VanEck_EU"
     Xtrackers = "Xtrackers"  # UCITS only
+    LGIM = "LGIM"  # L&G, UCITS only
 
 
 class SecurityListing(NamedTuple):
