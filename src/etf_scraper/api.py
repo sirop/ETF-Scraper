@@ -20,6 +20,7 @@ from etf_scraper.scrapers import (
     GlobalXEUListings,
     AmundiListings,
     FranklinEUListings,
+    HSBCListings,
 )
 
 SCRAPERS = {
@@ -35,6 +36,7 @@ SCRAPERS = {
         GlobalXEUListings,
         AmundiListings,
         FranklinEUListings,
+        HSBCListings,
     ]
 }
 

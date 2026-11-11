@@ -20,6 +20,7 @@ dependencies = [
     "numpy",
     "pandas_market_calendars",
     "openpyxl",
+    "xlrd>=2.0.1",  # old .xls files (HSBC holdings)
 ]
 
 [project.optional-dependencies]

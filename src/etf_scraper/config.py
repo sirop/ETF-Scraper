@@ -9,7 +9,9 @@ try:
     from importlib.resources import files
 
     LISTINGS_FILE = files("etf_scraper.data").joinpath("listings.csv")
+    HSBC_SEED_FILE = files("etf_scraper.data").joinpath("hsbc_etfs.csv")
 except:
     from pathlib import Path
 
     LISTINGS_FILE = Path(__file__).parent.joinpath("data/listings.csv")
+    HSBC_SEED_FILE = Path(__file__).parent.joinpath("data/hsbc_etfs.csv")
