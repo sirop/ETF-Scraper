@@ -85,7 +85,7 @@ ls /tmp/out # IVW_2022_12_30.csv IVW_2022_11_30.csv ...
 
 ```
 
-Note: iShares US no longer publishes past holdings (since 2026 its dated download returns an HTML page), so this example now only works for providers with history, eg Vanguard. Past iShares US holdings are available from SEC N-PORT filings (see below).
+Note: iShares US no longer publishes past holdings (since 2026 its dated download returns an HTML page). With `SEC_USER_AGENT` set, past dates of US funds are taken from SEC N-PORT filings automatically (see below), which have only month end dates, mostly one per quarter.
 
 Note: here we need to query for trading day month ends since iShares doesn't report holdings on non-trading days. This is different for Vanguard which report holdings using calendar end dates.
 
@@ -176,6 +176,12 @@ from etf_scraper import list_nport_filings, query_nport_holdings
 list_nport_filings("VOO")  # report_date, filing_date, accession_number, folder_url
 query_nport_holdings("VOO", "2026-06-30")  # holdings for one reporting date
 query_nport_holdings("QQQ")  # latest public filing
+```
+
+`ETFScraper.query_holdings` uses this automatically: when a US fund's provider has no holdings for the requested date, it retrieves them from N-PORT if `SEC_USER_AGENT` is set (or `sec_user_agent` is passed). These rows have `source` = `sec_nport`; pass `nport_fallback=False` to turn this off.
+
+```python
+ETFScraper().query_holdings("IVV", "2026-03-31")  # iShares only has the latest -> N-PORT
 ```
 
 Caveats:

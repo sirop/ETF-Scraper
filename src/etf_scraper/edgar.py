@@ -111,6 +111,15 @@ def _parse_period_of_report(headers_text: str) -> Optional[date]:
     return pd.Timestamp(match.group(1)).date()
 
 
+@lru_cache(maxsize=4096)
+def _filing_report_date(folder_url: str, accession_number: str, user_agent: str):
+    """Reporting period of one filing. A filing never changes, so this is cached:
+    repeated queries for a fund (eg month ends over several years) then cost one
+    filing list request each instead of one request per filing."""
+    headers_url = f"{folder_url}{accession_number}-index-headers.html"
+    return _parse_period_of_report(_sec_get(headers_url, user_agent).text)
+
+
 def list_nport_filings(
     ticker: str,
     max_filings: int = 40,
@@ -151,9 +160,8 @@ def list_nport_filings(
         )
 
     for row in rows[:max_filings]:
-        headers_url = f"{row['folder_url']}{row['accession_number']}-index-headers.html"
-        row["report_date"] = _parse_period_of_report(
-            _sec_get(headers_url, user_agent).text
+        row["report_date"] = _filing_report_date(
+            row["folder_url"], row["accession_number"], _get_user_agent(user_agent)
         )
 
     filings = pd.DataFrame(

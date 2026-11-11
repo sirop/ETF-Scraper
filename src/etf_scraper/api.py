@@ -1,4 +1,5 @@
 import logging
+import os
 from functools import lru_cache
 from datetime import date
 from multiprocessing.pool import ThreadPool
@@ -7,7 +8,9 @@ from typing import List, Union
 import pandas as pd
 
 from etf_scraper.config import LISTINGS_FILE
-from etf_scraper.base import Provider, SecurityListing
+from etf_scraper.base import InvalidParameterError, Provider, SecurityListing
+from etf_scraper.edgar import SEC_USER_AGENT_ENV, query_nport_holdings
+from etf_scraper.holdings import SOURCE_SEC_NPORT, normalize_holdings
 from etf_scraper.identifiers import looks_like_isin
 from etf_scraper.scrapers import (
     ISharesListings,
@@ -161,6 +164,8 @@ class ETFScraper:
         holdings_date: Union[date, str, None] = None,
         provider: Union[str, Provider, None] = None,
         exchange: Union[str, None] = None,
+        nport_fallback: bool = True,
+        sec_user_agent: Union[str, None] = None,
     ) -> pd.DataFrame:
         """Query for holdings for the given fund + holdings_date.
 
@@ -170,6 +175,11 @@ class ETFScraper:
         possible holdings. If given as a string, then attempt to parse using
         pd.to_datetime.
         - provider, exchange: optional, to choose between funds sharing a ticker
+        - nport_fallback: for US funds, if the provider doesn't publish holdings for
+        holdings_date, retrieve them from the fund's public SEC N-PORT filing
+        instead (source column "sec_nport"). N-PORT has month end dates only, made
+        public about 60 days later. Needs a SEC User-Agent with contact details.
+        - sec_user_agent: the SEC User-Agent, defaults to $SEC_USER_AGENT
 
         Returns holdings in the common format, see etf_scraper.holdings.
         """
@@ -187,4 +197,56 @@ class ETFScraper:
             f" from {sec_listing.provider}"
         )
         scraper = SCRAPERS[sec_listing.provider]
-        return scraper.query_holdings(sec_listing, holdings_date)
+        try:
+            return scraper.query_holdings(sec_listing, holdings_date)
+        except InvalidParameterError as provider_error:
+            if not (nport_fallback and holdings_date and _is_us_fund(sec_listing)):
+                raise
+            return self._query_nport_fallback(
+                sec_listing, holdings_date, provider_error, sec_user_agent
+            )
+
+    @staticmethod
+    def _query_nport_fallback(
+        sec_listing: SecurityListing,
+        holdings_date: date,
+        provider_error: Exception,
+        sec_user_agent: Union[str, None] = None,
+    ) -> pd.DataFrame:
+        user_agent = sec_user_agent or os.getenv(SEC_USER_AGENT_ENV)
+        if not user_agent:
+            raise InvalidParameterError(
+                f"{provider_error} To fall back to SEC N-PORT filings automatically, "
+                f"set the {SEC_USER_AGENT_ENV} environment variable (a name and "
+                f"email, as the SEC requires)."
+            ) from provider_error
+
+        logger.info(
+            f"{sec_listing.provider} has no holdings for {sec_listing.ticker} as of "
+            f"{holdings_date}, trying SEC N-PORT filings"
+        )
+        try:
+            holdings_df = query_nport_holdings(
+                sec_listing.ticker, holdings_date, user_agent=user_agent
+            )
+        except InvalidParameterError as nport_error:
+            raise InvalidParameterError(
+                f"{provider_error} N-PORT fallback: {nport_error}"
+            ) from nport_error
+
+        fund_isin = sec_listing.isin if isinstance(sec_listing.isin, str) else None
+        return normalize_holdings(
+            holdings_df,
+            fund_ticker=sec_listing.ticker,
+            fund_isin=fund_isin or None,
+            provider=sec_listing.provider,
+            source=SOURCE_SEC_NPORT,
+        )
+
+
+def _is_us_fund(sec_listing: SecurityListing) -> bool:
+    """US registered funds file N-PORT"""
+    for value in (sec_listing.domicile, sec_listing.isin):
+        if isinstance(value, str) and value:
+            return value.upper().startswith("US")
+    return False
