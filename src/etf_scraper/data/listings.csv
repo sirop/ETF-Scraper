@@ -3557,3 +3557,42 @@ iShares MSCI Brazil Small-Cap ETF,2010-09-28,EWZS,464289131,US4642891315,Equity,
 iShares Municipal Bond Index Fund,2018-11-16,BIDPX,066923210,US0669232102,Fixed Income,Municipals,United States,North America,https://www.ishares.com/us/products/306171/ishares-municipal-bond-index-fund,306171,145532013.8,MF,IShares,,,US
 iShares MSCI Brazil ETF,2000-07-10,EWZ,464286400,US4642864007,Equity,Large/Mid Cap,Brazil,Latin America,https://www.ishares.com/us/products/239612/ishares-msci-brazil-etf,239612,9021168588.81,ETF,IShares,,,US
 VanEck Semiconductor UCITS ETF,,SMH,,IE00BMC38736,,,,Global,https://www.vaneck.com/ie/en/investments/semiconductor-etf/,semiconductor-etf,,ETF,VanEck_EU,,,IE
+VanEck Morningstar US Wide Moat UCITS ETF,,MOTU,,IE0007I99HX7,,,,,https://www.vaneck.com/ie/en/investments/wide-moat-etf/,wide-moat-etf,,ETF,VanEck_EU,,,IE
+VanEck Morningstar US SMID Moat UCITS ETF,,SMOT,,IE000SBU19F7,,,,,https://www.vaneck.com/ie/en/investments/smid-moat-etf/,smid-moat-etf,,ETF,VanEck_EU,,,IE
+VanEck Agribusiness UCITS ETF,,MOO,,IE000GLK5WA7,,,,,https://www.vaneck.com/ie/en/investments/agribusiness-etf/,agribusiness-etf,,ETF,VanEck_EU,,,IE
+VanEck China Semiconductor UCITS ETF,,SMHC,,IE000TS4B6Y3,,,,,https://www.vaneck.com/ie/en/investments/china-semiconductor-etf/,china-semiconductor-etf,,ETF,VanEck_EU,,,IE
+VanEck Circular Economy UCITS ETF,,REUS,,IE0001J5A2T9,,,,Global,https://www.vaneck.com/ie/en/investments/circular-economy-etf/,circular-economy-etf,,ETF,VanEck_EU,,,IE
+VanEck Crypto and Blockchain Innovators UCITS ETF,,DAPP,,IE00BMDKNW35,,,,Global,https://www.vaneck.com/ie/en/investments/crypto-etf/,crypto-etf,,ETF,VanEck_EU,,,IE
+VanEck Defense UCITS ETF,,DFNS,,IE000YYE6WK5,,,,Global,https://www.vaneck.com/ie/en/investments/defense-etf/,defense-etf,,ETF,VanEck_EU,,,IE
+VanEck Electrification and Power Infrastructure UCITS ETF,,PIKA,,IE000YYVSM16,,,,,https://www.vaneck.com/ie/en/investments/electrification-and-power-infrastructure-etf/,electrification-and-power-infrastructure-etf,,ETF,VanEck_EU,,,IE
+VanEck Genomics and Healthcare Innovators UCITS ETF,,CURE,,IE000B9PQW54,,,,Global,https://www.vaneck.com/ie/en/investments/genomics-etf/,genomics-etf,,ETF,VanEck_EU,,,IE
+VanEck Gold Miners UCITS ETF,,GDX,,IE00BQQP9F84,,,,Global,https://www.vaneck.com/ie/en/investments/gold-miners-etf/,gold-miners-etf,,ETF,VanEck_EU,,,IE
+VanEck Hydrogen Economy UCITS ETF,,HDRO,,IE00BMDH1538,,,,Global,https://www.vaneck.com/ie/en/investments/hydrogen-etf/,hydrogen-etf,,ETF,VanEck_EU,,,IE
+VanEck Junior Gold Miners UCITS ETF,,GDXJ,,IE00BQQP9G91,,,,Global,https://www.vaneck.com/ie/en/investments/junior-gold-miners-etf/,junior-gold-miners-etf,,ETF,VanEck_EU,,,IE
+VanEck Medical Robotics and Bionic Engineering UCITS ETF,,CYBO,,IE0005TF96I9,,,,Europe,https://www.vaneck.com/ie/en/investments/bionic-etf/,bionic-etf,,ETF,VanEck_EU,,,IE
+VanEck Morningstar Developed Markets Dividend Leaders UCITS ETF,,TDIV,,NL0011683594,,,,Global,https://www.vaneck.com/de/en/investments/dividend-etf/,dividend-etf,,ETF,VanEck_EU,,,NL
+VanEck Morningstar Developed Markets ex-US Dividend Leaders UCITS ETF,,TDVX,,IE000QYDXKV5,,,,,https://www.vaneck.com/ie/en/investments/markets-ex-us-dividend-leaders-etf/,markets-ex-us-dividend-leaders-etf,,ETF,VanEck_EU,,,IE
+VanEck Morningstar Global Wide Moat UCITS ETF,,GOAT,,IE00BL0BMZ89,,,,Global,https://www.vaneck.com/ie/en/investments/global-moat-etf/,global-moat-etf,,ETF,VanEck_EU,,,IE
+VanEck Morningstar US ESG Wide Moat UCITS ETF,,MOAT,,IE00BQQP9H09,,,,Global,https://www.vaneck.com/ie/en/investments/moat-etf/,moat-etf,,ETF,VanEck_EU,,,IE
+VanEck New China UCITS ETF,,CNEW,,IE0000H445G8,,,,Global,https://www.vaneck.com/ie/en/investments/china-etf/,china-etf,,ETF,VanEck_EU,,,IE
+VanEck Oil Services UCITS ETF,,OIHV,,IE000NXF88S1,,,,Global,https://www.vaneck.com/ie/en/investments/oil-services-etf/,oil-services-etf,,ETF,VanEck_EU,,,IE
+VanEck Quantum Computing UCITS ETF,,QNTM,,IE0007Y8Y157,,,,,https://www.vaneck.com/ie/en/investments/quantum-computing-etf/,quantum-computing-etf,,ETF,VanEck_EU,,,IE
+VanEck Rare Earth and Strategic Metals UCITS ETF,,REMX,,IE0002PG6CA6,,,,Global,https://www.vaneck.com/ie/en/investments/rare-earth-etf/,rare-earth-etf,,ETF,VanEck_EU,,,IE
+VanEck S&P Global Mining UCITS ETF,,GDIG,,IE00BDFBTQ78,,,,Global,https://www.vaneck.com/ie/en/investments/mining-etf/,mining-etf,,ETF,VanEck_EU,,,IE
+VanEck Space Innovators UCITS ETF,,JEDI,,IE000YU9K6K2,,,,Global,https://www.vaneck.com/ie/en/investments/space-etf/,space-etf,,ETF,VanEck_EU,,,IE
+VanEck Sustainable Future of Food UCITS ETF,,VEGI,,IE0005B8WVT6,,,,Global,https://www.vaneck.com/ie/en/investments/food-etf/,food-etf,,ETF,VanEck_EU,,,IE
+VanEck Uranium and Nuclear Technologies UCITS ETF,,NUCL,,IE000M7V94E1,,,,Global,https://www.vaneck.com/ie/en/investments/nuclear-etf/,nuclear-etf,,ETF,VanEck_EU,,,IE
+VanEck Video Gaming and eSports UCITS ETF,,ESPO,,IE00BYWQWR46,,,,Global,https://www.vaneck.com/ie/en/investments/esports-etf/,esports-etf,,ETF,VanEck_EU,,,IE
+VanEck Multi-Asset Balanced Allocation UCITS ETF,,NTM,,NL0009272772,,,,Global,https://www.vaneck.com/de/en/investments/balanced-multi-asset-etf/,balanced-multi-asset-etf,,ETF,VanEck_EU,,,NL
+VanEck Multi-Asset Conservative Allocation UCITS ETF,,DTM,,NL0009272764,,,,Global,https://www.vaneck.com/de/en/investments/conservative-multi-asset-etf/,conservative-multi-asset-etf,,ETF,VanEck_EU,,,NL
+VanEck iBoxx EUR Corporates UCITS ETF,,TCBT,,NL0009690247,,,,Global,https://www.vaneck.com/de/en/investments/corporate-bonds-etf/,corporate-bonds-etf,,ETF,VanEck_EU,,,NL
+VanEck Emerging Markets High Yield Bond UCITS ETF,,HYEM,,IE00BF541080,,,,Global,https://www.vaneck.com/ie/en/investments/emerging-markets-high-yield-bond-etf/,emerging-markets-high-yield-bond-etf,,ETF,VanEck_EU,,,IE
+VanEck J.P. Morgan EM Local Currency Bond UCITS ETF,,EMLC,,IE00BDS67326,,,,Global,https://www.vaneck.com/ie/en/investments/emerging-markets-local-currency-bond-etf/,emerging-markets-local-currency-bond-etf,,ETF,VanEck_EU,,,IE
+VanEck European Equal Weight Screened UCITS ETF,,TEET,,NL0010731816,,,,Europe,https://www.vaneck.com/de/en/investments/europe-etf/,europe-etf,,ETF,VanEck_EU,,,NL
+VanEck Global Fallen Angel High Yield Bond UCITS ETF,,GFA,,IE00BF540Z61,,,,Global,https://www.vaneck.com/ie/en/investments/fallen-angels-etf/,fallen-angels-etf,,ETF,VanEck_EU,,,IE
+VanEck iBoxx EUR Sovereign Capped AAA-AA 1-5 UCITS ETF,,TAT,,NL0010273801,,,,Europe,https://www.vaneck.com/de/en/investments/government-bonds-etf/,government-bonds-etf,,ETF,VanEck_EU,,,NL
+VanEck Multi-Asset Growth Allocation UCITS ETF,,TOF,,NL0009272780,,,,Global,https://www.vaneck.com/de/en/investments/growth-multi-asset-etf/,growth-multi-asset-etf,,ETF,VanEck_EU,,,NL
+VanEck Global Real Estate UCITS ETF,,TRET,,NL0009690239,,,,Global,https://www.vaneck.com/de/en/investments/real-estate-etf/,real-estate-etf,,ETF,VanEck_EU,,,NL
+VanEck iBoxx EUR Sovereign Diversified 1-10 UCITS ETF,,TGBT,,NL0009690254,,,,Europe,https://www.vaneck.com/de/en/investments/sovereign-bonds-etf/,sovereign-bonds-etf,,ETF,VanEck_EU,,,NL
+VanEck US Fallen Angel High Yield Bond UCITS ETF,,USFA,,IE000J6CHW80,,,,Global,https://www.vaneck.com/ie/en/investments/us-fallen-angels-etf/,us-fallen-angels-etf,,ETF,VanEck_EU,,,IE
+VanEck World Equal Weight Screened UCITS ETF,,TSWE,,NL0010408704,,,,Global,https://www.vaneck.com/de/en/investments/world-etf/,world-etf,,ETF,VanEck_EU,,,NL

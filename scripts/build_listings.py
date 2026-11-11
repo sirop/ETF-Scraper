@@ -8,6 +8,7 @@ Usage (from the repository root):
     python scripts/build_listings.py Franklin_EU
 """
 
+import logging
 import sys
 from pathlib import Path
 
@@ -36,6 +37,7 @@ def main(provider: str):
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.WARNING, format="%(levelname)s %(name)s: %(message)s")
     if len(sys.argv) != 2:
         sys.exit(__doc__)
     main(sys.argv[1])

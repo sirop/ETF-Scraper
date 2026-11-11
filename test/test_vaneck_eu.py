@@ -34,6 +34,24 @@ def test_vaneck_holdings_parser():
     assert cash["name"] == "Other/Cash" and pd.isna(cash["ticker"]) and pd.isna(cash["isin"])
 
 
+def test_vaneck_bond_holdings_parser():
+    """Bond funds: coupon, maturity, rating and country instead of ticker and shares"""
+    df = VanEckEUListings._parse_holdings_resp(
+        DATA_DIR.joinpath("VanEckEU_TCBT_holdings_20261110.xlsx").read_bytes()
+    )
+    assert len(df) == 41
+    first = df.iloc[0]
+    assert (first["name"], first["isin"]) == ("Hsbc Holdings Plc", "XS2621539910")
+    assert first["coupon"] == 4.856
+    assert first["maturity_date"] == pd.Timestamp("2033-05-23")
+    assert (first["rating"], first["location"], first["currency"]) == ("A-", "United Kingdom", "EUR")
+    assert first["market_value"] == 1567715
+    assert np.isclose(df["weight"].sum(), 100.0)
+    assert df["file_fund_ticker"].iloc[0] == "TCBT"
+    cash = df.iloc[-1]
+    assert cash["name"] == "Other/Cash" and pd.isna(cash["isin"]) and pd.isna(cash["maturity_date"])
+
+
 @pytest.mark.parametrize(
     ["text", "expected"],
     [
@@ -90,11 +108,31 @@ def test_vaneck_query_holdings_normalized(monkeypatch):
 def test_vaneck_slug_from_product_url(monkeypatch):
     calls = []
     monkeypatch.setattr(
-        VanEckEUListings, "retrieve_holdings", lambda slug, ticker="": calls.append(slug)
+        VanEckEUListings,
+        "retrieve_holdings",
+        lambda slug, ticker="", product_url=None: calls.append((slug, product_url)),
     )
     listing = SecurityListing(ticker="SMH", provider="VanEck_EU", product_url=SMH_PAGE_URL)
     VanEckEUListings._retrieve_holdings(listing)
-    assert calls == ["semiconductor-etf"]
+    assert calls == [("semiconductor-etf", SMH_PAGE_URL)]
+
+
+def test_vaneck_holdings_url_follows_product_site(monkeypatch):
+    """Funds domiciled in the Netherlands are on the German site"""
+    calls = []
+
+    class _Resp:
+        content = XLSX.read_bytes()
+
+    def fake_get(url, expect=None):
+        calls.append(url)
+        return _Resp()
+
+    monkeypatch.setattr(VanEckEUListings.session, "get", fake_get)
+    de_url = "https://www.vaneck.com/de/en/investments/balanced-multi-asset-etf/"
+    VanEckEUListings.retrieve_holdings("balanced-multi-asset-etf", "", de_url)
+    VanEckEUListings.retrieve_holdings("semiconductor-etf")
+    assert calls == [de_url + "downloads/holdings/", SMH_PAGE_URL + "downloads/holdings/"]
 
 
 def test_vaneck_latest_only():
@@ -114,14 +152,43 @@ def test_vaneck_fund_page_parser():
     assert VanEckEUListings.parse_fund_page("<html><title>Insights</title></html>") is None
 
 
+# page header as on the agribusiness page, which has no schema.org fund data
+HEADER_ONLY_PAGE = """<html><head><title>VanEck Agribusiness UCITS ETF  |&#xA0;VanEck</title></head>
+<body><div class="d-flex">
+    <div class="ticker-label">MOO</div>
+    <h1 class="h1"><div class=" ticker " data-item="">MOO</div>
+        <div class="fund-title">VanEck Agribusiness UCITS ETF </div></h1>
+</div>
+<div class="fund-details-header-section">VanEck Agribusiness UCITS ETF ISIN: IE000GLK5WA7 <svg></svg></div>
+</body></html>"""
+
+
+def test_vaneck_fund_page_header_fallback():
+    info = VanEckEUListings.parse_fund_page(HEADER_ONLY_PAGE)
+    assert info == {
+        "fund_name": "VanEck Agribusiness UCITS ETF",
+        "isin": "IE000GLK5WA7",
+        "category": None,
+        "ticker": "MOO",
+    }
+
+
+def test_vaneck_clean_name():
+    assert VanEckEUListings._clean_name(
+        "VanEck Space Innovators UCITS ETFVanEck Space Innovators UCITS ETF"
+    ) == "VanEck Space Innovators UCITS ETF"
+    assert VanEckEUListings._clean_name(" VanEck\xa0Defense  UCITS ETF ") == "VanEck Defense UCITS ETF"
+
+
 def test_vaneck_slugs_from_saved_page():
     html = """
     <a href="https://www.vaneck.com/ie/en/investments/semiconductor-etf/">SMH</a>
     <a href="/ie/en/investments/gold-miners-etf/overview/">GDX</a>
+    <a href="https://www.vaneck.com/DE/en/investments/moat-etf/">MOAT</a>
     <a href="/ie/en/investments/semiconductor-etf/">again</a>
     <a href="/ie/en/insights/">not a fund</a>
     """
-    assert VanEckEUListings.slugs_from_html(html) == ["semiconductor-etf", "gold-miners-etf"]
+    assert VanEckEUListings.slugs_from_html(html) == ["semiconductor-etf", "gold-miners-etf", "moat-etf"]
 
 
 def test_vaneck_seed_file():
@@ -133,20 +200,32 @@ def test_vaneck_seed_file():
 def test_vaneck_listings(monkeypatch):
     page = PAGE.read_text(encoding="utf-8")
 
+    nl_page = HEADER_ONLY_PAGE.replace("IE000GLK5WA7", "NL0009272772").replace("MOO", "TBAL")
+
     class _Resp:
-        def __init__(self, text):
+        def __init__(self, text, url):
             self.text = text
+            self.url = url
 
     def fake_get(url, expect=None):
         if "semiconductor-etf" in url:
-            return _Resp(page)
-        return _Resp("<html><title>Page not found</title></html>")
+            return _Resp(page, url)
+        if "/ie/en/investments/balanced-multi-asset-etf" in url:
+            # not offered on the Irish site: redirected to a country home page
+            return _Resp("<html><title>VanEck Germany</title></html>",
+                         "https://www.vaneck.com/de/en/?pagena=true")
+        if "/de/en/investments/balanced-multi-asset-etf" in url:
+            return _Resp(nl_page, url.rstrip("/"))
+        return _Resp("<html><title>Page not found</title></html>", url)
 
     monkeypatch.setattr(VanEckEUListings.session, "get", fake_get)
-    seed = pd.DataFrame({"slug": ["semiconductor-etf", "closed-etf"]})
+    seed = pd.DataFrame({"slug": ["semiconductor-etf", "closed-etf", "balanced-multi-asset-etf"]})
     df = VanEckEUListings.retrieve_listings(seed)
-    assert len(df) == 1
+    assert len(df) == 2
     row = df.iloc[0]
     assert (row["ticker"], row["isin"], row["product_id"]) == ("SMH", "IE00BMC38736", "semiconductor-etf")
     assert row["product_url"] == SMH_PAGE_URL
     assert (row["provider"], row["domicile"], row["fund_type"]) == ("VanEck_EU", "IE", "ETF")
+    nl = df.iloc[1]
+    assert (nl["ticker"], nl["isin"], nl["domicile"]) == ("TBAL", "NL0009272772", "NL")
+    assert nl["product_url"] == "https://www.vaneck.com/de/en/investments/balanced-multi-asset-etf/"

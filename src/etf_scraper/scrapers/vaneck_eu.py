@@ -49,9 +49,15 @@ HOLDING_COL_MAPPING = {
     "Shares": "amount",
     "Market Value": "market_value",
     "% of Net Assets": "weight",
+    # bond funds
+    "Coupon": "coupon",
+    "Maturity": "maturity_date",
+    "Composite Rating": "rating",
+    "State": "location",  # the issuer's country
 }
+CURRENCY_SYMBOLS = {"$": "USD", "\u20ac": "EUR", "\u00a3": "GBP"}
 # fund page links on any VanEck country site, eg /ie/en/ or /de/de/ (same slugs)
-SLUG_RE = re.compile(r"/(?:[a-z]{2,4})/(?:[a-z]{2})/investments/([a-z0-9][a-z0-9-]*)/")
+SLUG_RE = re.compile(r"/(?:[A-Za-z]{2,4})/(?:[A-Za-z]{2})/investments/([a-z0-9][a-z0-9-]*)/")
 
 
 class VanEckEUListings(ProviderListings):
@@ -61,6 +67,9 @@ class VanEckEUListings(ProviderListings):
     host = "https://www.vaneck.com"
     fund_page = host + "/ie/en/investments/{slug}/"
     holdings_url = fund_page + "downloads/holdings/"
+    # country sites tried for a fund page, in order: funds domiciled in the
+    # Netherlands are not on the Irish site, but on the German one
+    page_sites = ["ie/en", "de/en"]
 
     # ---------------------------------------------------------------- holdings
 
@@ -111,10 +120,18 @@ class VanEckEUListings(ProviderListings):
         if df.empty:
             raise InvalidParameterError(f"{cls.provider}: no holdings published")
 
-        for col in ["amount", "market_value", "weight"]:
+        if "market_value" in df and "currency" not in df:
+            # "€ 1,567,715.00" -> EUR
+            symbol = df["market_value"].astype(str).str.extract(r"([$\u20ac\u00a3])")[0]
+            df["currency"] = symbol.map(CURRENCY_SYMBOLS)
+        for col in ["amount", "market_value", "weight", "coupon"]:
             if col in df:
                 df[col] = cls._to_number(df[col]).values
-        for col in ["name", "bbg_ticker", "isin"]:
+        if "maturity_date" in df:
+            df["maturity_date"] = pd.to_datetime(
+                df["maturity_date"], format="%d/%m/%Y", errors="coerce"
+            )
+        for col in ["name", "bbg_ticker", "isin", "rating", "location"]:
             if col in df:
                 text = df[col].astype("object").map(
                     lambda v: v.strip() if isinstance(v, str) else v
@@ -133,9 +150,15 @@ class VanEckEUListings(ProviderListings):
         return df.reset_index(drop=True)
 
     @classmethod
-    def retrieve_holdings(cls, slug: str, ticker: str = "") -> pd.DataFrame:
-        """Retrieve the latest holdings of the fund with this fund page slug."""
-        url = cls.holdings_url.format(slug=slug)
+    def retrieve_holdings(
+        cls, slug: str, ticker: str = "", product_url: Optional[str] = None
+    ) -> pd.DataFrame:
+        """Retrieve the latest holdings of the fund with this fund page slug (on
+        the site of product_url if given, else the Irish site)."""
+        if isinstance(product_url, str) and f"/investments/{slug}" in product_url:
+            url = product_url.rstrip("/") + "/downloads/holdings/"
+        else:
+            url = cls.holdings_url.format(slug=slug)
         logger.debug(f"Querying {cls.provider} for {ticker or slug} holdings: {url}")
         try:
             resp = cls.session.get(url, expect=("spreadsheet", "excel", "octet-stream"))
@@ -162,7 +185,7 @@ class VanEckEUListings(ProviderListings):
             slug = m[1] if m else None
         if not slug:
             raise InvalidParameterError(f"No fund page known for {sec_listing.ticker}")
-        return cls.retrieve_holdings(slug, sec_listing.ticker)
+        return cls.retrieve_holdings(slug, sec_listing.ticker, sec_listing.product_url)
 
     # ---------------------------------------------------------------- listings
 
@@ -182,9 +205,23 @@ class VanEckEUListings(ProviderListings):
         return seed[seed["slug"] != ""].drop_duplicates("slug")
 
     @staticmethod
-    def parse_fund_page(html: str) -> Optional[dict]:
+    def _clean_name(name):
+        if not isinstance(name, str):
+            return None
+        name = re.sub(r"\s+", " ", name.replace("\xa0", " ")).strip()
+        half = len(name) // 2
+        if len(name) % 2 == 0 and name[:half] == name[half:]:
+            name = name[:half]  # seen on the site: "X UCITS ETFX UCITS ETF"
+        return name or None
+
+    @classmethod
+    def parse_fund_page(cls, html: str) -> Optional[dict]:
         """Name, ISIN, ticker and category from a fund page, or None if the page
-        doesn't describe a UCITS fund."""
+        doesn't describe a fund.
+
+        Uses the page header (ticker, fund title, "ISIN: ...") and the schema.org
+        data, which not every page has.
+        """
         info = {}
         for block in re.findall(
             r"<script[^>]*application/ld\+json[^>]*>(.*?)</script>", html, re.S
@@ -208,8 +245,20 @@ class VanEckEUListings(ProviderListings):
                     parts = [p.strip() for p in node["name"].replace("\xa0", " ").split("|")]
                     if len(parts) >= 3:
                         info["ticker"] = parts[-2]
+        header_ticker = re.search(r'class="ticker-label">\s*([^<\s]+)\s*<', html)
+        header_name = re.search(r'class="fund-title">([^<]+)<', html)
+        header_isin = re.search(r"ISIN:\s*(?:<[^>]+>\s*)*([A-Z]{2}[A-Z0-9]{9}[0-9])\b", html)
+        if header_ticker:
+            info["ticker"] = header_ticker[1]
+        if header_name:
+            info["fund_name"] = header_name[1]
+        if not info.get("isin") and header_isin:
+            info["isin"] = header_isin[1]
+        info["fund_name"] = cls._clean_name(info.get("fund_name"))
         if not isinstance(info.get("isin"), str) or not is_valid_isin(info["isin"]):
             return None
+        info.setdefault("category", None)
+        info.setdefault("ticker", None)
         return info
 
     @classmethod
@@ -226,15 +275,22 @@ class VanEckEUListings(ProviderListings):
         for i, slug in enumerate(slugs, 1):
             if progress:
                 progress(i, len(slugs), slug)
-            url = cls.fund_page.format(slug=slug)
-            try:
-                resp = cls.session.get(url, expect=("html",))
-            except Exception as e:
-                logger.warning(f"{cls.provider}: skipping {slug}: {e}")
-                continue
-            info = cls.parse_fund_page(resp.text)
+            url, info = None, None
+            for site in cls.page_sites:
+                page_url = f"{cls.host}/{site}/investments/{slug}/"
+                try:
+                    resp = cls.session.get(page_url, expect=("html",))
+                except Exception as e:
+                    logger.warning(f"{cls.provider}: {page_url}: {e}")
+                    continue
+                if f"/investments/{slug}" not in resp.url:
+                    continue  # redirected away: the fund isn't offered on this site
+                info = cls.parse_fund_page(resp.text)
+                if info is not None:
+                    url = page_url
+                    break
             if info is None:
-                logger.info(f"{cls.provider}: {slug} is not a UCITS fund page, skipped")
+                logger.warning(f"{cls.provider}: no fund page found for {slug}, skipped")
                 continue
             rows.append(
                 {
