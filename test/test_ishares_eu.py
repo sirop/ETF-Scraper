@@ -125,10 +125,12 @@ def test_ishares_eu_normalized_output(monkeypatch):
     }])
     df = ETFScraper(listings).query_holdings("IE00B5BMR087")
 
-    assert calls == [
-        "https://www.ishares.com/uk/individual/en/products/253743/"
-        "ishares-core-s-p-500-ucits-etf/latest-holdings.csv"
-    ]
+    assert len(calls) == 1
+    assert calls[0].startswith(
+        "https://www.blackrock.com/varnish-api/uk-retail01-product-data/"
+    )
+    assert "portfolioId=253743&" in calls[0]
+    assert "component=holdings" in calls[0]
     assert list(df.columns[: len(HOLDINGS_COLUMNS)]) == HOLDINGS_COLUMNS
     assert (df["fund_ticker"] == "CSPX").all()
     assert (df["fund_isin"] == "IE00B5BMR087").all()
