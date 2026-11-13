@@ -1,8 +1,9 @@
 """iShares (BlackRock) European UCITS ETFs, via the iShares UK site.
 
 Sources (all public, plain requests with an honest User-Agent):
-- Holdings: each product page publishes a "Latest fund holdings CSV data" download
-  (schema.org DataDownload) at <product page>/latest-holdings.csv
+- Holdings: the holdings CSV behind each product page's download button, from
+  BlackRock's product data API (get-fund-document?...&component=holdings), keyed
+  by the product id in the page URL
 - Fund list: the UK product sitemap (https://www.ishares.com/uk/product-sitemap.xml)
   lists all product pages. Ticker, name and asset class come from each page's
   schema.org data, the ISIN from the page header. Only the first part of each page
@@ -40,7 +41,12 @@ class ISharesEUListings(ProviderListings):
 
     site_root = "https://www.ishares.com/uk/individual/en/"
     sitemap_url = "https://www.ishares.com/uk/product-sitemap.xml"
-    holdings_file = "latest-holdings.csv"
+    holdings_api = (
+        "https://www.blackrock.com/varnish-api/uk-retail01-product-data/product-data/"
+        "api/v1/get-fund-document?appType=PRODUCT_PAGE&appSubType=ISHARES"
+        "&targetSite=ishares-uk&locale=en_GB&portfolioId={product_id}"
+        "&component=holdings&userType=individual"
+    )
     # ticker, name, asset class and ISIN all sit near the top of the product page
     page_prefix_bytes = 250_000
 
@@ -82,16 +88,27 @@ class ISharesEUListings(ProviderListings):
     # ---------------------------------------------------------------- holdings
 
     @classmethod
+    def product_id(cls, product_url: str) -> str:
+        """The numeric product (portfolio) id in a product page URL."""
+        m = re.search(r"/products/(\d+)(?:/|$)", product_url)
+        if not m:
+            raise InvalidParameterError(f"No product id in {product_url}")
+        return m.group(1)
+
+    @classmethod
     def holdings_url(cls, product_url: str) -> str:
-        """The download link published on the product page. Use the exact product
-        URL: the site's cache is per URL, so other spellings that also resolve (eg a
-        different slug) can return an older file.
+        """The holdings download of the product page's "Holdings" section.
+
+        Since November 2026 the <product page>/latest-holdings.csv link (still named
+        in the page's schema.org data) answers 400 "Unknown site: uk"; the page's
+        download buttons use BlackRock's product data API instead, keyed by the
+        product id. Same CSV layout as before.
         """
-        return product_url.rstrip("/") + "/" + cls.holdings_file
+        return cls.holdings_api.format(product_id=cls.product_id(product_url))
 
     @classmethod
     def _parse_holdings_resp(cls, resp_text: str):
-        """Parse a latest-holdings.csv download. Returns (holdings_df, as_of_date)."""
+        """Parse a holdings CSV download. Returns (holdings_df, as_of_date)."""
         metadata, table = split_preamble(resp_text, cls.required_cols)
 
         as_of_str = next(
